@@ -41,9 +41,14 @@ namespace Microsoft.Maui.Animations
 			}
 
 			if (!_animations.Contains(animation))
+			{
 				_animations.Add(animation);
+			}
+
 			if (!Ticker.IsRunning && AutoStartTicker)
+			{
 				Start();
+			}
 		}
 
 		/// <inheritdoc/>
@@ -52,7 +57,9 @@ namespace Microsoft.Maui.Animations
 			_animations.TryRemove(animation);
 
 			if (_animations.Count == 0)
+			{
 				End();
+			}
 		}
 
 		void Start()
@@ -88,7 +95,18 @@ namespace Microsoft.Maui.Animations
 			animations.ForEach(OnAnimationTick);
 
 			if (_animations.Count == 0)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				End();
+After:
+			{
+				End();
+			}
+*/
+			{
+				End();
+			}
 
 			void OnAnimationTick(Animation animation)
 			{
@@ -114,7 +132,9 @@ namespace Microsoft.Maui.Animations
 			if (!_disposedValue)
 			{
 				if (disposing && Ticker is IDisposable disposable)
+				{
 					disposable.Dispose();
+				}
 
 				_disposedValue = true;
 			}

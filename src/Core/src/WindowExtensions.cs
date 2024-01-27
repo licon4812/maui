@@ -19,10 +19,29 @@ namespace Microsoft.Maui
 		{
 #if PLATFORM
 			if (window?.Handler?.PlatformView is not PlatformView platformView)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return Task.FromResult<IScreenshotResult?>(null);
 
 			if (!Screenshot.Default.IsCaptureSupported)
+After:
+			{
+*/
+			{
 				return Task.FromResult<IScreenshotResult?>(null);
+			}
+
+			if (!Screenshot.Default.IsCaptureSupported)
+			{
+				return Task.FromResult<IScreenshotResult?>(null);
+			}
+			}
+
+			if (!Screenshot.Default.IsCaptureSupported)
+			{
+				return Task.FromResult<IScreenshotResult?>(null);
+			}
 
 			return CaptureAsync(platformView);
 #else

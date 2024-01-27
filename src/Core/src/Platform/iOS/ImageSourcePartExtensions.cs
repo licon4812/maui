@@ -19,7 +19,24 @@ namespace Microsoft.Maui.Platform
 
 			var imageSource = image.Source;
 			if (imageSource == null)
+			{
+			
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+						imageView.UpdateIsAnimationPlaying(image);
+After:
+					{
+						imageView.UpdateIsAnimationPlaying(image);
+					}
+*/
+{
 				return null;
+			}
 
 			var events = image as IImageSourcePartEvents;
 
@@ -40,7 +57,9 @@ namespace Microsoft.Maui.Platform
 				{
 					setImage.Invoke(uiImage);
 					if (destinationContext is UIImageView imageView)
+					{
 						imageView.UpdateIsAnimationPlaying(image);
+					}
 				}
 
 				events?.LoadingCompleted(applied);

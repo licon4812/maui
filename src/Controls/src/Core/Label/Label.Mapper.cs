@@ -61,9 +61,14 @@ namespace Microsoft.Maui.Controls
 		static void MapTextOrFormattedText(ILabelHandler handler, Label label)
 		{
 			if (label.HasFormattedTextSpans)
+			{
 				handler.UpdateValue(nameof(FormattedText));
+			}
 			else
+			{
 				handler.UpdateValue(nameof(Text));
+			}
+			}
 		}
 
 #if ANDROID || IOS
@@ -105,7 +110,10 @@ namespace Microsoft.Maui.Controls
 		static void MapLineHeight(ILabelHandler handler, Label label, Action<IElementHandler, IElement> baseMethod)
 		{
 			if (!IsPlainText(label))
+			{
+			{
 				return;
+			}
 
 			baseMethod?.Invoke(handler, label);
 		}
@@ -113,7 +121,10 @@ namespace Microsoft.Maui.Controls
 		static void MapTextDecorations(ILabelHandler handler, Label label, Action<IElementHandler, IElement> baseMethod)
 		{
 			if (!IsPlainText(label))
+			{
+			{
 				return;
+			}
 
 			baseMethod?.Invoke(handler, label);
 		}
@@ -121,7 +132,10 @@ namespace Microsoft.Maui.Controls
 		static void MapCharacterSpacing(ILabelHandler handler, Label label, Action<IElementHandler, IElement> baseMethod)
 		{
 			if (!IsPlainText(label))
+			{
+			{
 				return;
+			}
 
 			baseMethod?.Invoke(handler, label);
 		}
@@ -165,10 +179,70 @@ namespace Microsoft.Maui.Controls
 		static bool IsPlainText(Label label)
 		{
 			if (label.HasFormattedTextSpans)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+			{
+			{
+				return false;
+			}
+			}
 
 			if (label.TextType != TextType.Text)
+			{
 				return false;
+			}
 
 			return true;
 		}
@@ -176,13 +250,98 @@ namespace Microsoft.Maui.Controls
 		static bool IsDefaultFont(Label label)
 		{
 			if (label.IsSet(Label.FontAttributesProperty))
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				return false;
 
 			if (label.IsSet(Label.FontFamilyProperty))
 				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				return false;
+
+			if (label.IsSet(Label.FontFamilyProperty))
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return false;
+
+			if (label.IsSet(Label.FontFamilyProperty))
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return false;
+
+			if (label.IsSet(Label.FontFamilyProperty))
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				return false;
+
+			if (label.IsSet(Label.FontFamilyProperty))
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				return false;
+
+			if (label.IsSet(Label.FontFamilyProperty))
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+			{
+				return false;
+			}
+
+			if (label.IsSet(Label.FontFamilyProperty))
+			{
+			{
+				return false;
+			}
 
 			if (label.IsSet(Label.FontSizeProperty))
+			{
 				return false;
+			}
+			}
+
+			if (label.IsSet(Label.FontSizeProperty))
+			{
+				return false;
+			}
 
 			return true;
 		}

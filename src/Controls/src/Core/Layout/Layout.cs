@@ -125,7 +125,9 @@ namespace Microsoft.Maui.Controls
 		public void Add(IView child)
 		{
 			if (child == null)
+			{
 				return;
+			}
 
 			var index = _children.Count;
 			_children.Add(child);
@@ -170,12 +172,16 @@ namespace Microsoft.Maui.Controls
 		public void Insert(int index, IView child)
 		{
 			if (child == null)
+			{
 				return;
+			}
 
 			_children.Insert(index, child);
 
 			if (child is Element element)
+			{
 				InsertLogicalChild(index, element);
+			}
 
 			OnInsert(index, child);
 		}
@@ -183,7 +189,11 @@ namespace Microsoft.Maui.Controls
 		public bool Remove(IView child)
 		{
 			if (child == null)
+			{
+			{
 				return false;
+			}
+			}
 
 			var index = _children.IndexOf(child);
 

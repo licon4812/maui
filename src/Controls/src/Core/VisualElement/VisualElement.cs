@@ -98,12 +98,18 @@ namespace Microsoft.Maui.Controls
 			propertyChanging: (bindable, oldvalue, newvalue) =>
 			{
 				if (oldvalue != null)
+				{
+				{
 					(bindable as VisualElement)?.StopNotifyingClipChanges();
+				}
 			},
 			propertyChanged: (bindable, oldvalue, newvalue) =>
 			{
 				if (newvalue != null)
+				{
+				{
 					(bindable as VisualElement)?.NotifyClipChanges();
+				}
 			});
 
 		void NotifyClipChanges()
@@ -143,12 +149,16 @@ namespace Microsoft.Maui.Controls
 					s.PropertyChanged -= OnClipChanged;
 
 					if (s is GeometryGroup g)
+					{
 						g.InvalidateGeometryRequested -= OnClipChanged;
+					}
 				}
 
 				source.PropertyChanged += OnClipChanged;
 				if (source is GeometryGroup geometryGroup)
+				{
 					geometryGroup.InvalidateGeometryRequested += OnClipChanged;
+				}
 
 				base.Subscribe(source, handler);
 			}
@@ -160,7 +170,9 @@ namespace Microsoft.Maui.Controls
 					s.PropertyChanged -= OnClipChanged;
 
 					if (s is GeometryGroup g)
+					{
 						g.InvalidateGeometryRequested -= OnClipChanged;
+					}
 				}
 				base.Unsubscribe();
 			}
@@ -193,7 +205,10 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (value == _effectiveVisual)
+				{
+				{
 					return;
+				}
 
 				_effectiveVisual = value;
 				OnPropertyChanged(VisualProperty.PropertyName);
@@ -220,14 +235,21 @@ namespace Microsoft.Maui.Controls
 				var openBracket = transform.IndexOf("(", StringComparison.Ordinal);
 				var closeBracket = transform.IndexOf(")", StringComparison.Ordinal);
 				if (string.IsNullOrEmpty(transform) || openBracket < 0 || closeBracket < 0)
+				{
 					throw new FormatException("Format for transform is 'none | transform(value) [transform(value) ]*'");
+				}
+
 				var transformName = transform.Substring(0, openBracket);
 				var value = transform.Substring(openBracket + 1, closeBracket - openBracket - 1);
 				double translationX, translationY, scaleX, scaleY, rotateX, rotateY, rotate;
 				if (transformName.StartsWith("translateX", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out translationX))
+				{
 					bindable.SetValue(TranslationXProperty, translationX);
+				}
 				else if (transformName.StartsWith("translateY", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out translationY))
+				{
 					bindable.SetValue(TranslationYProperty, translationY);
+				}
 				else if (transformName.StartsWith("translate", StringComparison.OrdinalIgnoreCase))
 				{
 					var translate = value.Split(',');
@@ -238,9 +260,13 @@ namespace Microsoft.Maui.Controls
 					}
 				}
 				else if (transformName.StartsWith("scaleX", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out scaleX))
+				{
 					bindable.SetValue(ScaleXProperty, scaleX);
+				}
 				else if (transformName.StartsWith("scaleY", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out scaleY))
+				{
 					bindable.SetValue(ScaleYProperty, scaleY);
+				}
 				else if (transformName.StartsWith("scale", StringComparison.OrdinalIgnoreCase))
 				{
 					var scale = value.Split(',');
@@ -251,13 +277,21 @@ namespace Microsoft.Maui.Controls
 					}
 				}
 				else if (transformName.StartsWith("rotateX", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out rotateX))
+				{
 					bindable.SetValue(RotationXProperty, rotateX);
+				}
 				else if (transformName.StartsWith("rotateY", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out rotateY))
+				{
 					bindable.SetValue(RotationYProperty, rotateY);
+				}
 				else if (transformName.StartsWith("rotate", StringComparison.OrdinalIgnoreCase) && double.TryParse(value, out rotate))
+				{
 					bindable.SetValue(RotationProperty, rotate);
+				}
 				else
+				{
 					throw new FormatException("Invalid transform name");
+				}
 			}
 		}
 
@@ -280,12 +314,18 @@ namespace Microsoft.Maui.Controls
 			propertyChanging: (bindable, oldvalue, newvalue) =>
 			{
 				if (oldvalue != null)
+				{
+				{
 					(bindable as VisualElement)?.StopNotifyingBackgroundChanges();
+				}
 			},
 			propertyChanged: (bindable, oldvalue, newvalue) =>
 			{
 				if (newvalue != null)
+				{
+				{
 					(bindable as VisualElement)?.NotifyBackgroundChanges();
+				}
 			});
 
 		WeakBackgroundChangedProxy _backgroundProxy;
@@ -305,7 +345,10 @@ namespace Microsoft.Maui.Controls
 		{
 			var background = Background;
 			if (background is ImmutableBrush)
+			{
+			{
 				return;
+			}
 
 			if (background != null)
 			{
@@ -320,7 +363,10 @@ namespace Microsoft.Maui.Controls
 		{
 			var background = Background;
 			if (background is ImmutableBrush)
+			{
+			{
 				return;
+			}
 
 			if (background != null)
 			{
@@ -350,12 +396,16 @@ namespace Microsoft.Maui.Controls
 					s.PropertyChanged -= OnBackgroundChanged;
 
 					if (s is GradientBrush g)
+					{
 						g.InvalidateGradientBrushRequested -= OnBackgroundChanged;
+					}
 				}
 
 				source.PropertyChanged += OnBackgroundChanged;
 				if (source is GradientBrush gradientBrush)
+				{
 					gradientBrush.InvalidateGradientBrushRequested += OnBackgroundChanged;
+				}
 
 				base.Subscribe(source, handler);
 			}
@@ -367,7 +417,9 @@ namespace Microsoft.Maui.Controls
 					s.PropertyChanged -= OnBackgroundChanged;
 
 					if (s is GradientBrush g)
+					{
 						g.InvalidateGradientBrushRequested -= OnBackgroundChanged;
+					}
 				}
 				base.Unsubscribe();
 			}
@@ -449,14 +501,18 @@ namespace Microsoft.Maui.Controls
 		void SetEffectiveFlowDirection(EffectiveFlowDirection value, bool fireFlowDirectionPropertyChanged)
 		{
 			if (value == _effectiveFlowDirection)
+			{
+			{
 				return;
+			}
 
 			_effectiveFlowDirection = value;
 			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
 
 			if (fireFlowDirectionPropertyChanged)
+			{
 				OnPropertyChanged(FlowDirectionProperty.PropertyName);
-
+			}
 		}
 
 		/// <inheritdoc/>
@@ -636,7 +692,9 @@ namespace Microsoft.Maui.Controls
 
 				var parent = Parent as VisualElement;
 				if (parent is not null && !parent.IsEnabled)
+				{
 					return false;
+				}
 
 				return _isEnabledExplicit;
 			}
@@ -668,7 +726,10 @@ namespace Microsoft.Maui.Controls
 				while (parent is not null)
 				{
 					if (parent.CascadeInputTransparent && parent.InputTransparent)
+					{
 						return true;
+					}
+
 					parent = parent.Parent as IInputTransparentContainerElement;
 				}
 
@@ -915,13 +976,18 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (_computedConstraint == value)
+				{
+				{
 					return;
+				}
 
 				LayoutConstraint oldConstraint = Constraint;
 				_computedConstraint = value;
 				LayoutConstraint newConstraint = Constraint;
 				if (oldConstraint != newConstraint)
+				{
 					OnConstraintChanged(oldConstraint, newConstraint);
+				}
 			}
 		}
 
@@ -944,14 +1010,18 @@ namespace Microsoft.Maui.Controls
 			get
 			{
 				if (_isInPlatformLayout)
+				{
 					return true;
+				}
 
 				Element parent = RealParent;
 				if (parent != null)
 				{
 					var visualElement = parent as VisualElement;
 					if (visualElement != null && visualElement.IsInPlatformLayout)
+					{
 						return true;
+					}
 				}
 
 				return false;
@@ -970,10 +1040,16 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (_isPlatformStateConsistent == value)
+				{
+				{
 					return;
+				}
+
 				_isPlatformStateConsistent = value;
 				if (value && IsPlatformEnabled)
+				{
 					InvalidateMeasureInternal(InvalidationTrigger.RendererReady);
+				}
 			}
 		}
 
@@ -991,11 +1067,16 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (value == _isPlatformEnabled)
+				{
+				{
 					return;
+				}
 
 				_isPlatformEnabled = value;
 				if (value && IsPlatformStateConsistent)
+				{
 					InvalidateMeasureInternal(InvalidationTrigger.RendererReady);
+				}
 
 				OnIsPlatformEnabledChanged();
 				PlatformEnabledChanged?.Invoke(this, EventArgs.Empty);
@@ -1008,7 +1089,10 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (_selfConstraint == value)
+				{
+				{
 					return;
+				}
 
 				LayoutConstraint oldConstraint = Constraint;
 				_selfConstraint = value;
@@ -1058,7 +1142,10 @@ namespace Microsoft.Maui.Controls
 			get
 			{
 				if (_resources != null)
+				{
 					return _resources;
+				}
+
 				_resources = new ResourceDictionary();
 				((IResourceDictionary)_resources).ValuesChanged += OnResourcesChanged;
 				return _resources;
@@ -1066,14 +1153,24 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (_resources == value)
+				{
+				{
 					return;
+				}
+
 				OnPropertyChanging();
 				if (_resources != null)
+				{
 					((IResourceDictionary)_resources).ValuesChanged -= OnResourcesChanged;
+				}
+
 				_resources = value;
 				OnResourcesChanged(value);
 				if (_resources != null)
+				{
 					((IResourceDictionary)_resources).ValuesChanged += OnResourcesChanged;
+				}
+
 				OnPropertyChanged();
 			}
 		}
@@ -1109,14 +1206,21 @@ namespace Microsoft.Maui.Controls
 		{
 			var constraintSize = new Size(widthConstraint, heightConstraint);
 			if (_measureCache.TryGetValue(constraintSize, out SizeRequest cachedResult))
+			{
 				return cachedResult;
+			}
 
 			double widthRequest = WidthRequest;
 			double heightRequest = HeightRequest;
 			if (widthRequest >= 0)
+			{
 				widthConstraint = Math.Min(widthConstraint, widthRequest);
+			}
+
 			if (heightRequest >= 0)
+			{
 				heightConstraint = Math.Min(heightConstraint, heightRequest);
+			}
 
 			SizeRequest result = OnMeasure(widthConstraint, heightConstraint);
 			bool hasMinimum = result.Minimum != result.Request;
@@ -1127,23 +1231,32 @@ namespace Microsoft.Maui.Controls
 			{
 				request.Height = heightRequest;
 				if (!hasMinimum)
+				{
 					minimum.Height = heightRequest;
+				}
 			}
 
 			if (widthRequest != -1 && !double.IsNaN(widthRequest))
 			{
 				request.Width = widthRequest;
 				if (!hasMinimum)
+				{
 					minimum.Width = widthRequest;
+				}
 			}
 
 			double minimumHeightRequest = MinimumHeightRequest;
 			double minimumWidthRequest = MinimumWidthRequest;
 
 			if (minimumHeightRequest != -1)
+			{
 				minimum.Height = minimumHeightRequest;
+			}
+
 			if (minimumWidthRequest != -1)
+			{
 				minimum.Width = minimumWidthRequest;
+			}
 
 			minimum.Height = Math.Min(request.Height, minimum.Height);
 			minimum.Width = Math.Min(request.Width, minimum.Width);
@@ -1151,7 +1264,9 @@ namespace Microsoft.Maui.Controls
 			var r = new SizeRequest(request, minimum);
 
 			if (r.Request.Width > 0 && r.Request.Height > 0)
+			{
 				_measureCache[constraintSize] = r;
+			}
 
 			return r;
 		}
@@ -1171,7 +1286,10 @@ namespace Microsoft.Maui.Controls
 			if (includeMargins)
 			{
 				if (this is View view)
+				{
 					margin = view.Margin;
+				}
+
 				widthConstraint = Math.Max(0, widthConstraint - margin.HorizontalThickness);
 				heightConstraint = Math.Max(0, heightConstraint - margin.VerticalThickness);
 			}
@@ -1205,7 +1323,9 @@ namespace Microsoft.Maui.Controls
 		public void Unfocus()
 		{
 			if (!IsFocused)
+			{
 				return;
+			}
 
 			Handler?.Invoke(nameof(IView.Unfocus));
 			FocusChangeRequested?.Invoke(this, new FocusRequestArgs());
@@ -1229,213 +1349,9 @@ namespace Microsoft.Maui.Controls
 			PropagateBindingContextToShadow();
 
 			base.OnBindingContextChanged();
-		}
-
-		protected override void OnChildAdded(Element child)
-		{
-			base.OnChildAdded(child);
-
-			var view = child as View;
-
-			if (view != null)
-				ComputeConstraintForView(view);
-		}
-
-		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
-		{
-			base.OnChildRemoved(child, oldLogicalIndex);
-
-			if (child is View view)
-				view.ComputedConstraint = LayoutConstraint.None;
-		}
-
-		/// <summary>
-		/// Raises the <see cref="ChildrenReordered"/> event.
-		/// </summary>
-		protected void OnChildrenReordered()
-			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
-
-		IPlatformSizeService _platformSizeService;
-
-		/// <summary>
-		/// Method that is called when a layout measurement happens.
-		/// </summary>
-		/// <param name="widthConstraint">The width constraint to request.</param>
-		/// <param name="heightConstraint">The height constraint to request.</param>
-		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
-		protected virtual SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
-		{
-			if (!IsPlatformEnabled)
-				return new SizeRequest(new Size(-1, -1));
-
-			if (Handler != null)
-				return new SizeRequest(Handler.GetDesiredSize(widthConstraint, heightConstraint));
-
-			_platformSizeService ??= DependencyService.Get<IPlatformSizeService>();
-			return _platformSizeService.GetPlatformSize(this, widthConstraint, heightConstraint);
-		}
-
-		/// <summary>
-		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
-		/// </summary>
-		/// <param name="width">The new width of the element.</param>
-		/// <param name="height">The new height of the element.</param>
-		protected virtual void OnSizeAllocated(double width, double height)
-		{
-		}
-
-		/// <summary>
-		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
-		/// </summary>
-		/// <param name="width">The newly allocated width.</param>
-		/// <param name="height">The newly allocated height.</param>
-		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
-		protected void SizeAllocated(double width, double height) => OnSizeAllocated(width, height);
-
-		/// <summary>
-		/// Occurs when a batch of property changes have been committed by calling <see cref="BatchCommit"/>.
-		/// </summary>
-		/// <remarks>For internal use only. This API can be changed or removed without notice at any time.</remarks>
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public event EventHandler<EventArg<VisualElement>> BatchCommitted;
-
-		internal void ComputeConstrainsForChildren()
-		{
-			for (var i = 0; i < LogicalChildrenInternal.Count; i++)
-			{
-				if (LogicalChildrenInternal[i] is View child)
-					ComputeConstraintForView(child);
-			}
-		}
-
-		internal virtual void ComputeConstraintForView(View view) => view.ComputedConstraint = LayoutConstraint.None;
-
-		[Obsolete("This is now handled through VisualElement.MapFocus, this event handler will be removed in the future.")]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public event EventHandler<FocusRequestArgs> FocusChangeRequested;
-		internal void InvokeFocusChangeRequested(FocusRequestArgs args) =>
-			FocusChangeRequested?.Invoke(this, args);
-		internal bool HasFocusChangeRequestedEvent => FocusChangeRequested is not null;
-
-		/// <summary>
-		/// Invalidates the measure of an element.
-		/// </summary>
-		/// <remarks>For internal use only. This API can be changed or removed without notice at any time.</remarks>
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public void InvalidateMeasureNonVirtual(InvalidationTrigger trigger)
-		{
-			InvalidateMeasureInternal(trigger);
-		}
-
-		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
-		{
-			_measureCache.Clear();
-
-			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
-			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
-
-			switch (trigger)
-			{
-				case InvalidationTrigger.MarginChanged:
-				case InvalidationTrigger.HorizontalOptionsChanged:
-				case InvalidationTrigger.VerticalOptionsChanged:
-					ParentView?.InvalidateMeasure();
-					break;
-				default:
-					(this as IView)?.InvalidateMeasure();
-					break;
-			}
-
-			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
-		}
-
-		/// <inheritdoc/>
-		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
-
-		internal void InvalidateStateTriggers(bool attach)
-		{
-			if (!this.HasVisualStateGroups())
-				return;
-
-			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
-
-			if (groups.Count == 0)
-				return;
-
-			foreach (var group in groups)
-				foreach (var state in group.States)
-					foreach (var stateTrigger in state.StateTriggers)
-					{
-						if (attach)
-							stateTrigger.SendAttached();
-						else
-							stateTrigger.SendDetached();
-					}
-		}
-
-		internal void MockBounds(Rect bounds)
-		{
-#if NETSTANDARD2_0 || NET6_0_OR_GREATER
-			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
-#else
-			_mockX = bounds.X;
-			_mockY = bounds.Y;
-			_mockWidth = bounds.Width;
-			_mockHeight = bounds.Height;
-#endif
-		}
-
-		bool IsMocked()
-		{
-			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
-		}
-
-		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
-
-		internal virtual void OnIsPlatformEnabledChanged()
-		{
-		}
-
-		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
-		{
-			if (this is IView fe)
-			{
-				fe.Handler?.UpdateValue(nameof(IView.Visibility));
-			}
-
-			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
-		}
-
-		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
-		{
-			if (values == null)
-				return;
-
-			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
-			{
-				base.OnParentResourcesChanged(values);
-				return;
-			}
-
-			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
-			var changedResources = new List<KeyValuePair<string, object>>();
-			foreach (KeyValuePair<string, object> c in Resources)
-				innerKeys.Add(c.Key);
-			foreach (KeyValuePair<string, object> value in values)
-			{
-				if (innerKeys.Add(value.Key))
-					changedResources.Add(value);
-				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
-				{
-					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
-					mergedClassStyles.AddRange(value.Value as List<Style>);
-					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
-				}
-			}
-			if (changedResources.Count != 0)
-				OnResourcesChanged(changedResources);
-		}
-
+		
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
 
 		void PropagateBindingContextToStateTriggers()
@@ -1476,43 +1392,579 @@ namespace Microsoft.Maui.Controls
 		/// Changes the current visual state based on this elements current property values.
 		/// </summary>
 		protected internal virtual void ChangeVisualState()
+After:
+		protected override void OnChildAdded(Element child)
 		{
-			if (!IsEnabled)
-			{
-				VisualStateManager.GoToState(this, VisualStateManager.CommonStates.Disabled);
-			}
-			else if (IsPointerOver)
-			{
-				VisualStateManager.GoToState(this, VisualStateManager.CommonStates.PointerOver);
-			}
-			else
-			{
-				VisualStateManager.GoToState(this, VisualStateManager.CommonStates.Normal);
-			}
+			base.OnChildAdded(child);
 
-			if (IsEnabled)
+			var view = child as View;
+
+			if (view != null)
 			{
-				// Focus needs to be handled independently; otherwise, if no actual Focus state is supplied
-				// in the control's visual states, the state can end up stuck in PointerOver after the pointer
-				// exits and the control still has focus.
-				VisualStateManager.GoToState(this,
-					IsFocused ? VisualStateManager.CommonStates.Focused : VisualStateManager.CommonStates.Unfocused);
+				ComputeConstraintForView(view);
 			}
 		}
 
-		static void OnVisualChanged(BindableObject bindable, object oldValue, object newValue)
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
 		{
-			var self = bindable as IVisualController;
-			var newVisual = (IVisual)newValue;
+			base.OnChildRemoved(child, oldLogicalIndex);
 
-			if (newVisual.IsMatchParent())
-				self.EffectiveVisual = Microsoft.Maui.Controls.VisualMarker.Default;
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual void ChangeVisualState()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+				return;
+
+			foreach (var group in groups)
+				foreach (var state in group.States)
+					foreach (var stateTrigger in state.StateTriggers)
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+		}
+
+		private protected void SetPointerOver(bool value, bool callChangeVisualState = true)
+		{
+			if (_isPointerOver == value)
+				return;
+
+			_isPointerOver = value;
+			if (callChangeVisualState)
+				ChangeVisualState();
+		}
+
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void ChangeVisualState()
+After:
+		protected override void OnChildAdded(Element child)
+		{
+			base.OnChildAdded(child);
+
+			var view = child as View;
+
+			if (view != null)
+			{
+				ComputeConstraintForView(view);
+			}
+		}
+
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+		{
+			base.OnChildRemoved(child, oldLogicalIndex);
+
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual void ChangeVisualState()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+				return;
+
+			foreach (var group in groups)
+				foreach (var state in group.States)
+					foreach (var stateTrigger in state.StateTriggers)
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+		}
+
+		private protected void SetPointerOver(bool value, bool callChangeVisualState = true)
+		{
+			if (_isPointerOver == value)
+				return;
+
+			_isPointerOver = value;
+			if (callChangeVisualState)
+				ChangeVisualState();
+		}
+
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void ChangeVisualState()
+After:
+		protected override void OnChildAdded(Element child)
+		{
+			base.OnChildAdded(child);
+
+			var view = child as View;
+
+			if (view != null)
+			{
+				ComputeConstraintForView(view);
+			}
+		}
+
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+		{
+			base.OnChildRemoved(child, oldLogicalIndex);
+
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual void ChangeVisualState()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+				return;
+
+			foreach (var group in groups)
+				foreach (var state in group.States)
+					foreach (var stateTrigger in state.StateTriggers)
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+		}
+
+		private protected void SetPointerOver(bool value, bool callChangeVisualState = true)
+		{
+			if (_isPointerOver == value)
+				return;
+
+			_isPointerOver = value;
+			if (callChangeVisualState)
+				ChangeVisualState();
+		}
+
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void ChangeVisualState()
+After:
+		protected override void OnChildAdded(Element child)
+		{
+			base.OnChildAdded(child);
+
+			var view = child as View;
+
+			if (view != null)
+			{
+				ComputeConstraintForView(view);
+			}
+		}
+
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+		{
+			base.OnChildRemoved(child, oldLogicalIndex);
+
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual void ChangeVisualState()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+				return;
+
+			foreach (var group in groups)
+				foreach (var state in group.States)
+					foreach (var stateTrigger in state.StateTriggers)
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+		}
+
+		private protected void SetPointerOver(bool value, bool callChangeVisualState = true)
+		{
+			if (_isPointerOver == value)
+				return;
+
+			_isPointerOver = value;
+			if (callChangeVisualState)
+				ChangeVisualState();
+		}
+
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void ChangeVisualState()
+After:
+		protected override void OnChildAdded(Element child)
+		{
+			base.OnChildAdded(child);
+
+			var view = child as View;
+
+			if (view != null)
+			{
+				ComputeConstraintForView(view);
+			}
+		}
+
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+		{
+			base.OnChildRemoved(child, oldLogicalIndex);
+
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual void ChangeVisualState()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+				return;
+
+			foreach (var group in groups)
+				foreach (var state in group.States)
+					foreach (var stateTrigger in state.StateTriggers)
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+		}
+
+		private protected void SetPointerOver(bool value, bool callChangeVisualState = true)
+		{
+			if (_isPointerOver == value)
+				return;
+
+			_isPointerOver = value;
+			if (callChangeVisualState)
+				ChangeVisualState();
+		}
+
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void ChangeVisualState()
+After:
+		protected override void OnChildAdded(Element child)
+		{
+			base.OnChildAdded(child);
+
+			var view = child as View;
+
+			if (view != null)
+			{
+				ComputeConstraintForView(view);
+			}
+		}
+
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+		{
+			base.OnChildRemoved(child, oldLogicalIndex);
+
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual void ChangeVisualState()
+*/
+	PropagateBindingContextToShadow();
+
+			base.OnBindingContextChanged();
+		}
+
+		protected override void OnChildAdded(Element child)
+		{
+			base.OnChildAdded(child);
+
+			var view = child as View;
+
+			if (view != null)
+			{
+				ComputeConstraintForView(view);
+			}
+		}
+
+		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
+		{
+			base.OnChildRemoved(child, oldLogicalIndex);
+
+			if (child is View view)
+			{
+				view.ComputedConstraint = LayoutConstraint.None;
+			}
+		}
+
+		/// <summary>
+		/// Raises the <see cref="ChildrenReordered"/> event.
+		/// </summary>
+		protected void OnChildrenReordered()
+			=> ChildrenReordered?.Invoke(this, EventArgs.Empty);
+
+		IPlatformSizeService _platformSizeService;
+
+		/// <summary>
+		/// Method that is called when a layout measurement happens.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that the element requires in order to be displayed on the device.</returns>
+		protected virtual SizeRequest OnMeasure(double widthConstraint, double heightConstraint)
+		{
+			if (!IsPlatformEnabled)
+			{
+				return new SizeRequest(new Size(-1, -1));
+			}
+
+			if (Handler != null)
+			{
+				return new SizeRequest(Handler.GetDesiredSize(widthConstraint, heightConstraint));
+			}
+
+			_platformSizeService ??= DependencyService.Get<IPlatformSizeService>();
+			return _platformSizeService.GetPlatformSize(this, widthConstraint, heightConstraint);
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			else
 				self.EffectiveVisual = (IVisual)newValue;
 
 			(self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
 		}
+After:
+		}
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			else
+				self.EffectiveVisual = (IVisual)newValue;
+
+			(self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			else
+				self.EffectiveVisual = (IVisual)newValue;
+
+			(self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			else
+				self.EffectiveVisual = (IVisual)newValue;
+
+			(self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			else
+				self.EffectiveVisual = (IVisual)newValue;
+
+			(self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			else
+				self.EffectiveVisual = (IVisual)newValue;
+
+			(self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
+		}
+After:
+		}
+*/
+		
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
 		{
 			var self = bindable as IFlowDirectionController;
@@ -1529,10 +1981,209 @@ namespace Microsoft.Maui.Controls
 		}
 
 		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+After:
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
 		{
-			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+			var self = bindable as IFlowDirectionController;
+
+			if (self.EffectiveFlowDirection.IsExplicit() && oldValue == newValue)
+				return;
+
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			else
+				self.EffectiveFlowDirection = newFlowDirection;
 		}
 
+		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+After:
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
+		{
+			var self = bindable as IFlowDirectionController;
+
+			if (self.EffectiveFlowDirection.IsExplicit() && oldValue == newValue)
+				return;
+
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			else
+				self.EffectiveFlowDirection = newFlowDirection;
+		}
+
+		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+After:
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
+		{
+			var self = bindable as IFlowDirectionController;
+
+			if (self.EffectiveFlowDirection.IsExplicit() && oldValue == newValue)
+				return;
+
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			else
+				self.EffectiveFlowDirection = newFlowDirection;
+		}
+
+		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+After:
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
+		{
+			var self = bindable as IFlowDirectionController;
+
+			if (self.EffectiveFlowDirection.IsExplicit() && oldValue == newValue)
+				return;
+
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			else
+				self.EffectiveFlowDirection = newFlowDirection;
+		}
+
+		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+After:
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
+		{
+			var self = bindable as IFlowDirectionController;
+
+			if (self.EffectiveFlowDirection.IsExplicit() && oldValue == newValue)
+				return;
+
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			else
+				self.EffectiveFlowDirection = newFlowDirection;
+		}
+
+		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+After:
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
+*/
+}
+
+		/// <summary>
+		/// Method that is called when the size of the element is set during a layout cycle. Implement this method to add class handling for this event.
+		/// </summary>
+		/// <param name="width">The new width of the element.</param>
+		/// <param name="height">The new height of the element.</param>
+		protected virtual void OnSizeAllocated(double width, double height)
+		{
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+After:
+		}
+*/
+		
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
 		{
 			if (bindable is VisualElement visualElement)
@@ -1641,29 +2292,657 @@ namespace Microsoft.Maui.Controls
 		/// This method must always be called if some event occurs and the value of
 		/// the <see cref="IsEnabledCore"/> property will change.
 		/// </summary>
-		protected void RefreshIsEnabledProperty() =>
-			this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+After:
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+				return;
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
 
 		/// <summary>
 		/// This method must always be called if some event occurs and the value of
-		/// the InputTransparentCore property will change.
+		/// the <see cref="IsEnabledCore"/> property will change.
 		/// </summary>
-		private protected void RefreshInputTransparentProperty()
-		{
-			// This method does not need to call the
-			// this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
-			// method because none of the derived types will affect this view. All we
-			// need to do is propagate the new value to all the children.
+After:
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+*/
 
-			(this as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
 		}
 
-		void UpdateBoundsComponents(Rect bounds)
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
 		{
-			_frame = bounds;
+			var element = (VisualElement)bindable;
 
-			BatchBegin();
+			if (element == null)
+				return;
 
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+After:
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+				return;
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+After:
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+				return;
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+After:
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+				return;
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+After:
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+*/
+}
+
+		/// <summary>
+		/// Method that is called during a layout cycle to signal the start of a sub-tree layout.
+		/// </summary>
+		/// <param name="width">The newly allocated width.</param>
+		/// <param name="height">The newly allocated height.</param>
+		/// <remarks>Calling <see cref="SizeAllocated(double, double)"/> will start a new layout cycle on the children of the element. Excessive calls to this method may cause performance problems.</remarks>
+		protected void SizeAllocated(double width, double height) => OnSizeAllocated(width, height);
+
+		/// <summary>
+		/// Occurs when a batch of property changes have been committed by calling <see cref="BatchCommit"/>.
+		/// </summary>
+		/// <remarks>For internal use only. This API can be changed or removed without notice at any time.</remarks>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public event EventHandler<EventArg<VisualElement>> BatchCommitted;
+
+		internal void ComputeConstrainsForChildren()
+		{
+			for (var i = 0; i < LogicalChildrenInternal.Count; i++)
+			{
+				if (LogicalChildrenInternal[i] is View child)
+				{
+					ComputeConstraintForView(child);
+				}
+			}
+		}
+
+		internal virtual void ComputeConstraintForView(View view) => view.ComputedConstraint = LayoutConstraint.None;
+
+		[Obsolete("This is now handled through VisualElement.MapFocus, this event handler will be removed in the future.")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public event EventHandler<FocusRequestArgs> FocusChangeRequested;
+		internal void InvokeFocusChangeRequested(FocusRequestArgs args) =>
+			FocusChangeRequested?.Invoke(this, args);
+		internal bool HasFocusChangeRequestedEvent => FocusChangeRequested is not null;
+
+		/// <summary>
+		/// Invalidates the measure of an element.
+		/// </summary>
+		/// <remarks>For internal use only. This API can be changed or removed without notice at any time.</remarks>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public void InvalidateMeasureNonVirtual(InvalidationTrigger trigger)
+		{
+			InvalidateMeasureInternal(trigger);
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			X = bounds.X;
 			Y = bounds.Y;
 			Width = bounds.Width;
@@ -1674,7 +2953,92 @@ namespace Microsoft.Maui.Controls
 
 			BatchCommit();
 		}
+After:
+		}
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 #nullable enable
 		Semantics? _semantics;
 		bool _isLoadedFired;
@@ -1707,16 +3071,1346 @@ namespace Microsoft.Maui.Controls
 		{
 			get => (IViewHandler?)base.Handler;
 			set => base.Handler = value;
-		}
-
-		private protected override void OnHandlerChangedCore()
+After:
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
 		{
-			base.OnHandlerChangedCore();
+			_measureCache.Clear();
 
-			IsPlatformEnabled = Handler != null;
-			UpdatePlatformUnloadedLoadedWiring(Window);
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
 		}
 
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+					return;
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+After:
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
+		{
+			_measureCache.Clear();
+
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+		}
+
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+					return;
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+After:
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
+		{
+			_measureCache.Clear();
+
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+		}
+
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+					return;
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+After:
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
+		{
+			_measureCache.Clear();
+
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+		}
+
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+					return;
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+After:
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
+		{
+			_measureCache.Clear();
+
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+		}
+
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+					return;
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+After:
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
+		{
+			_measureCache.Clear();
+
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+		}
+
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+*/
+		}
+
+		internal virtual void InvalidateMeasureInternal(InvalidationTrigger trigger)
+		{
+			_measureCache.Clear();
+
+			// TODO ezhart Once we get InvalidateArrange sorted, HorizontalOptionsChanged and 
+			// VerticalOptionsChanged will need to call ParentView.InvalidateArrange() instead
+
+			switch (trigger)
+			{
+				case InvalidationTrigger.MarginChanged:
+				case InvalidationTrigger.HorizontalOptionsChanged:
+				case InvalidationTrigger.VerticalOptionsChanged:
+					ParentView?.InvalidateMeasure();
+					break;
+				default:
+					(this as IView)?.InvalidateMeasure();
+					break;
+			}
+
+			MeasureInvalidated?.Invoke(this, new InvalidationEventArgs(trigger));
+		}
+
+		/// <inheritdoc/>
+		void IVisualElementController.InvalidateMeasure(InvalidationTrigger trigger) => InvalidateMeasureInternal(trigger);
+
+		internal void InvalidateStateTriggers(bool attach)
+		{
+			if (!this.HasVisualStateGroups())
+			{
+				return;
+			}
+
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						if (attach)
+						{
+							stateTrigger.SendAttached();
+						}
+						else
+						{
+							stateTrigger.SendDetached();
+						}
+					}
+				}
+			}
+		}
+
+		internal void MockBounds(Rect bounds)
+		{
+#if NETSTANDARD2_0 || NET6_0_OR_GREATER
+			(_mockX, _mockY, _mockWidth, _mockHeight) = bounds;
+#else
+			_mockX = bounds.X;
+			_mockY = bounds.Y;
+			_mockWidth = bounds.Width;
+			_mockHeight = bounds.Height;
+#endif
+		}
+
+		bool IsMocked()
+		{
+			return _mockX != -1 || _mockY != -1 || _mockWidth != -1 || _mockHeight != -1;
+		}
+
+		internal virtual void OnConstraintChanged(LayoutConstraint oldConstraint, LayoutConstraint newConstraint) => ComputeConstrainsForChildren();
+
+		internal virtual void OnIsPlatformEnabledChanged()
+		{
+		}
+
+		internal virtual void OnIsVisibleChanged(bool oldValue, bool newValue)
+		{
+			if (this is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Visibility));
+			}
+
+			InvalidateMeasureInternal(InvalidationTrigger.Undefined);
+		}
+
+		internal override void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
+		{
+			if (values == null)
+			{
+				return;
+			}
+
+			if (!((IResourcesProvider)this).IsResourcesCreated || Resources.Count == 0)
+			{
+				base.OnParentResourcesChanged(values);
+				return;
+			}
+
+			var innerKeys = new HashSet<string>(StringComparer.Ordinal);
+			var changedResources = new List<KeyValuePair<string, object>>();
+			foreach (KeyValuePair<string, object> c in Resources)
+			{
+				innerKeys.Add(c.Key);
+			}
+
+			foreach (KeyValuePair<string, object> value in values)
+			{
+				if (innerKeys.Add(value.Key))
+				{
+					changedResources.Add(value);
+				}
+				else if (value.Key.StartsWith(Style.StyleClassPrefix, StringComparison.Ordinal))
+				{
+					var mergedClassStyles = new List<Style>(Resources[value.Key] as List<Style>);
+					mergedClassStyles.AddRange(value.Value as List<Style>);
+					changedResources.Add(new KeyValuePair<string, object>(value.Key, mergedClassStyles));
+				}
+			}
+			if (changedResources.Count != 0)
+			{
+				OnResourcesChanged(changedResources);
+			}
+		}
+
+		internal void UnmockBounds() => _mockX = _mockY = _mockWidth = _mockHeight = -1;
+
+		void PropagateBindingContextToStateTriggers()
+		{
+			var groups = (IList<VisualStateGroup>)GetValue(VisualStateManager.VisualStateGroupsProperty);
+
+			if (groups.Count == 0)
+			{
+				return;
+			}
+
+			foreach (var group in groups)
+			{
+				foreach (var state in group.States)
+				{
+					foreach (var stateTrigger in state.StateTriggers)
+					{
+						SetInheritedBindingContext(stateTrigger, BindingContext);
+					}
+				}
+			}
+		}
+
+		void OnFocused() => Focused?.Invoke(this, new FocusEventArgs(this, true));
+
+		internal void ChangeVisualStateInternal() => ChangeVisualState();
+
+		bool _isPointerOver;
+
+		internal bool IsPointerOver
+		{
+			get { return _isPointerOver; }
+		}
+
+		private protected void SetPointerOver(bool value, bool callChangeVisualState = true)
+		{
+			if (_isPointerOver == value)
+			{
+				return;
+			}
+
+			_isPointerOver = value;
+			if (callChangeVisualState)
+			{
+				ChangeVisualState();
+			}
+		
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 		/// <inheritdoc/>
 		Paint? IView.Background
 		{
@@ -1838,19 +4532,760 @@ namespace Microsoft.Maui.Controls
 		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
 		/// </summary>
 		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+After:
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
 		/// <inheritdoc/>
-		void IView.InvalidateArrange()
+		Paint? IView.Background
 		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+					return Background;
+				if (BackgroundColor.IsNotDefault())
+					return new SolidColorBrush(BackgroundColor);
+
+				return null;
+			}
 		}
 
 		/// <inheritdoc/>
-		Size IView.Measure(double widthConstraint, double heightConstraint)
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+						(bindable as VisualElement)?.NotifyShadowChanges();
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
 		{
-			DesiredSize = MeasureOverride(widthConstraint, heightConstraint);
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+After:
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+					return Background;
+				if (BackgroundColor.IsNotDefault())
+					return new SolidColorBrush(BackgroundColor);
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+						(bindable as VisualElement)?.NotifyShadowChanges();
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+After:
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+					return Background;
+				if (BackgroundColor.IsNotDefault())
+					return new SolidColorBrush(BackgroundColor);
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+						(bindable as VisualElement)?.NotifyShadowChanges();
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+After:
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+					return Background;
+				if (BackgroundColor.IsNotDefault())
+					return new SolidColorBrush(BackgroundColor);
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+						(bindable as VisualElement)?.NotifyShadowChanges();
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+After:
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+					return Background;
+				if (BackgroundColor.IsNotDefault())
+					return new SolidColorBrush(BackgroundColor);
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+						(bindable as VisualElement)?.NotifyShadowChanges();
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+After:
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+*/
+	if (callChangeVisualState)
+			{
+				ChangeVisualState();
+			}
+		}
+
+		/// <summary>
+		/// Changes the current visual state based on this elements current property values.
+		/// </summary>
+		protected internal virtual void ChangeVisualState()
+		{
+			if (!IsEnabled)
+			{
+				VisualStateManager.GoToState(this, VisualStateManager.CommonStates.Disabled);
+			}
+			else if (IsPointerOver)
+			{
+				VisualStateManager.GoToState(this, VisualStateManager.CommonStates.PointerOver);
+			}
+			else
+			{
+				VisualStateManager.GoToState(this, VisualStateManager.CommonStates.Normal);
+			}
+
+			if (IsEnabled)
+			{
+				// Focus needs to be handled independently; otherwise, if no actual Focus state is supplied
+				// in the control's visual states, the state can end up stuck in PointerOver after the pointer
+				// exits and the control still has focus.
+				VisualStateManager.GoToState(this,
+					IsFocused ? VisualStateManager.CommonStates.Focused : VisualStateManager.CommonStates.Unfocused);
+			}
+		}
+
+		static void OnVisualChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var self = bindable as IVisualController;
+			var newVisual = (IVisual)newValue;
+
+			if (newVisual.IsMatchParent())
+			{
+				self.EffectiveVisual = Microsoft.Maui.Controls.VisualMarker.Default;
+			}
+			else
+			{
+				self.EffectiveVisual = (IVisual)newValue;
+			} (self as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.VisualProperty.PropertyName);
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			return DesiredSize;
 		}
+After:
+		}
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			return DesiredSize;
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			return DesiredSize;
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			return DesiredSize;
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			return DesiredSize;
+		}
+After:
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			return DesiredSize;
+		}
+After:
+		}
+*/
+		
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 		/// <summary>
 		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
 		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
@@ -1886,32 +5321,1038 @@ namespace Microsoft.Maui.Controls
 		Semantics? IView.Semantics => UpdateSemantics();
 
 		private protected virtual Semantics? UpdateSemantics()
+After:
+		static void FlowDirectionChanging()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
 		{
-			if (!this.IsSet(SemanticProperties.HintProperty) &&
-				!this.IsSet(SemanticProperties.DescriptionProperty) &&
-				!this.IsSet(SemanticProperties.HeadingLevelProperty))
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+After:
+		static void FlowDirectionChanging()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+After:
+		static void FlowDirectionChanging()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+After:
+		static void FlowDirectionChanging()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+After:
+		static void FlowDirectionChanging()
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+After:
+		static void FlowDirectionChanging()
+*/
+}
+
+		static void FlowDirectionChanging(BindableObject bindable, object oldValue, object newValue)
+		{
+			var self = bindable as IFlowDirectionController;
+
+			if (self.EffectiveFlowDirection.IsExplicit() && oldValue == newValue)
 			{
-				_semantics = null;
-				return _semantics;
+				return;
 			}
 
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			_semantics ??= new Semantics();
 			_semantics.Description = SemanticProperties.GetDescription(this);
 			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
 			_semantics.Hint = SemanticProperties.GetHint(this);
 			return _semantics;
+After:
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+After:
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+After:
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+After:
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+After:
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+After:
+			var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
+*/
+			
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+		static double EnsurePositive(double value)
+After:
+		static void FlowDirectionChanged(double value)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		static double EnsurePositive(double value)
+After:
+		static void FlowDirectionChanged(double value)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		static double EnsurePositive(double value)
+After:
+		static void FlowDirectionChanged(double value)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+		static double EnsurePositive(double value)
+After:
+		static void FlowDirectionChanged(double value)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		static double EnsurePositive(double value)
+After:
+		static void FlowDirectionChanged(double value)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		static double EnsurePositive(double value)
+After:
+		static void FlowDirectionChanged(double value)
+*/
+var newFlowDirection = ((FlowDirection)newValue).ToEffectiveFlowDirection(isExplicit: true);
+
+			if (self is VisualElement ve)
+			{
+				ve.SetEffectiveFlowDirection(newFlowDirection, false);
+			}
+			else
+			{
+				self.EffectiveFlowDirection = newFlowDirection;
+			}
 		}
 
-		static double EnsurePositive(double value)
+		static void FlowDirectionChanged(BindableObject bindable, object oldValue, object newValue)
 		{
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			if (value < 0)
 			{
 				return 0;
 			}
 
 			return value;
+After:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+After:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+After:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+After:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+After:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+After:
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+*/
+			
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
 		}
 
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+After:
+		static object CoerceIsEnabledProperty(object? sender, PropertyChangedEventArgs e)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(Shadow));
+		}
+
+		void PropagateBindingContextToBrush()
+		{
+			if (Background != null)
+				SetInheritedBindingContext(Background, BindingContext);
+		}
+
+		void PropagateBindingContextToShadow()
+		{
+			if (Shadow != null)
+				SetInheritedBindingContext(Shadow, BindingContext);
+		}
+
+		/// <summary>
+		/// Indicates if an element is connected to the main object tree.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get
+			{
+#if PLATFORM
+				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
+#else
+				bool isLoaded = Window != null;
+#endif
+
+				return isLoaded;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element has been constructed and added to the object tree.
+		/// </summary>
+		/// <remarks>This event may occur before the element has been measured so should not be relied on for size information.</remarks>
+		public event EventHandler? Loaded
+		{
+			add
+			{
+				_loaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+				if (_isLoadedFired)
+					_loaded?.Invoke(this, EventArgs.Empty);
+
+			}
+			remove
+			{
+				_loaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element is no longer connected to the main object tree.
+		/// </summary>
+		public event EventHandler? Unloaded
+		{
+			add
+			{
+				_unloaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+			remove
+			{
+				_unloaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.WindowChanged
+		{
+			add => _windowChanged += value;
+			remove => _windowChanged -= value;
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.PlatformContainerViewChanged
+		{
+			add => _platformContainerViewChanged += value;
+			remove => _platformContainerViewChanged -= value;
+		}
+
+		void SendLoaded() => SendLoaded(true);
+		void SendLoaded(bool updateWiring)
+		{
+			if (_isLoadedFired)
+				return;
+
+			_isLoadedFired = true;
+			_loaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching unloaded we need to verify
+			// unloaded is still correctly being watched for.
+After:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+After:
+		static object CoerceIsEnabledProperty(object? sender, PropertyChangedEventArgs e)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
 		/// <inheritdoc/>
 		double IView.Width
 		{
@@ -2286,6 +6727,3966 @@ namespace Microsoft.Maui.Controls
 			{
 				if (value is not bool visibility)
 					throw new NotSupportedException();
+After:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+			}
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			}
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+		protected void RefreshIsEnabledProperty() =>
+			this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the InputTransparentCore property will change.
+		/// </summary>
+		private protected void RefreshInputTransparentProperty()
+		{
+			// This method does not need to call the
+			// this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			// method because none of the derived types will affect this view. All we
+			// need to do is propagate the new value to all the children.
+
+			(this as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		void UpdateBoundsComponents(Rect bounds)
+		{
+			_frame = bounds;
+
+			BatchBegin();
+
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+				{
+					return;
+				}
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+		}
+
+		private protected override void OnHandlerChangedCore()
+		{
+			base.OnHandlerChangedCore();
+
+			IsPlatformEnabled = Handler != null;
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+				{
+					return Background;
+				}
+
+				if (BackgroundColor.IsNotDefault())
+				{
+					return new SolidColorBrush(BackgroundColor);
+				}
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+					{
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+					}
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+					{
+						(bindable as VisualElement)?.NotifyShadowChanges();
+					}
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+
+		/// <inheritdoc/>
+		void IView.InvalidateArrange()
+		{
+		}
+
+		/// <inheritdoc/>
+		Size IView.Measure(double widthConstraint, double heightConstraint)
+		{
+			DesiredSize = MeasureOverride(widthConstraint, heightConstraint);
+			return DesiredSize;
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+		{
+			if (!this.IsSet(SemanticProperties.HintProperty) &&
+				!this.IsSet(SemanticProperties.DescriptionProperty) &&
+				!this.IsSet(SemanticProperties.HeadingLevelProperty))
+			{
+				_semantics = null;
+				return _semantics;
+			}
+
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+		}
+
+		static double EnsurePositive(double value)
+		{
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+		}
+
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+				{
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+				}
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(Shadow));
+		}
+
+		void PropagateBindingContextToBrush()
+		{
+			if (Background != null)
+			{
+				SetInheritedBindingContext(Background, BindingContext);
+			}
+		}
+
+		void PropagateBindingContextToShadow()
+		{
+			if (Shadow != null)
+			{
+				SetInheritedBindingContext(Shadow, BindingContext);
+			}
+		}
+
+		/// <summary>
+		/// Indicates if an element is connected to the main object tree.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get
+			{
+#if PLATFORM
+				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
+#else
+				bool isLoaded = Window != null;
+#endif
+
+				return isLoaded;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element has been constructed and added to the object tree.
+		/// </summary>
+		/// <remarks>This event may occur before the element has been measured so should not be relied on for size information.</remarks>
+		public event EventHandler? Loaded
+		{
+			add
+			{
+				_loaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+				if (_isLoadedFired)
+				{
+					_loaded?.Invoke(this, EventArgs.Empty);
+				}
+			}
+			remove
+			{
+				_loaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element is no longer connected to the main object tree.
+		/// </summary>
+		public event EventHandler? Unloaded
+		{
+			add
+			{
+				_unloaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+			remove
+			{
+				_unloaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.WindowChanged
+		{
+			add => _windowChanged += value;
+			remove => _windowChanged -= value;
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.PlatformContainerViewChanged
+		{
+			add => _platformContainerViewChanged += value;
+			remove => _platformContainerViewChanged -= value;
+		}
+
+		void SendLoaded() => SendLoaded(true);
+		void SendLoaded(bool updateWiring)
+		{
+			if (_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = true;
+			_loaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching unloaded we need to verify
+			// unloaded is still correctly being watched for.
+
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		static void OnWindowChanged(BindableObject bindable, object? oldValue, object? newValue)
+		{
+			if (bindable is not VisualElement visualElement)
+			{
+				return;
+			}
+
+			var newWindow = (Window?)newValue;
+			var oldWindow = (Window?)oldValue;
+
+			visualElement.UpdatePlatformUnloadedLoadedWiring(newWindow, oldWindow);
+			visualElement.InvalidateStateTriggers(newValue != null);
+			visualElement._windowChanged?.Invoke(visualElement, EventArgs.Empty);
+		}
+
+		void OnWindowHandlerChanged(object? sender, EventArgs e)
+		{
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		// We only want to wire up to platform loaded events
+		// if the user is watching for them. Otherwise
+		// this will get wired up for every single VE that's on 
+		// the screen
+		void UpdatePlatformUnloadedLoadedWiring(Window? newWindow, Window? oldWindow = null)
+		{
+			// If I'm not attached to a window and I haven't started watching any platform events
+			// then it's not useful to wire anything up. We will just wait until
+			// This VE gets connected to the xplat Window before wiring up any events
+			if (!_watchingPlatformLoaded && newWindow is null)
+			{
+				return;
+			}
+
+			if (_unloaded is null && _loaded is null)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged -= OnWindowHandlerChanged;
+				}
+
+#if PLATFORM
+				_loadedUnloadedToken?.Dispose();
+				_loadedUnloadedToken = null;
+#endif
+
+				_watchingPlatformLoaded = false;
+				return;
+			}
+			else if (oldWindow is not null)
+			{
+				oldWindow.HandlerChanged -= OnWindowHandlerChanged;
+				_watchingPlatformLoaded = false;
+
+				if (newWindow is null)
+				{
+					// This will take care of cleaning up any pending unloaded events
+					HandlePlatformUnloadedLoaded();
+					return;
+				}
+			}
+
+			if (!_watchingPlatformLoaded)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged += OnWindowHandlerChanged;
+				}
+
+				_watchingPlatformLoaded = true;
+			}
+
+			HandlePlatformUnloadedLoaded();
+		}
+
+		partial void HandlePlatformUnloadedLoaded();
+
+		internal IView? ParentView => ((this as IView)?.Parent as IView);
+#nullable disable
+
+
+		public class FocusRequestArgs : EventArgs
+		{
+			public bool Focus { get; set; }
+
+			public bool Result { get; set; }
+		}
+
+		public class VisibilityConverter : TypeConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				=> sourceType == typeof(string);
+
+			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				=> true;
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				// IMPORTANT! Update VisibilityDesignTypeConverter.IsValid if making changes here
+				var strValue = value?.ToString()?.Trim();
+
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					if (strValue.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals("visible", StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals(bool.FalseString, StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("hidden", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+				}
+				throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}.", strValue, typeof(bool)));
+			}
+
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (value is not bool visibility)
+				{
+					throw new NotSupportedException();
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(Shadow));
+		}
+
+		void PropagateBindingContextToBrush()
+		{
+			if (Background != null)
+				SetInheritedBindingContext(Background, BindingContext);
+		}
+
+		void PropagateBindingContextToShadow()
+		{
+			if (Shadow != null)
+				SetInheritedBindingContext(Shadow, BindingContext);
+		}
+
+		/// <summary>
+		/// Indicates if an element is connected to the main object tree.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get
+			{
+#if PLATFORM
+				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
+#else
+				bool isLoaded = Window != null;
+#endif
+
+				return isLoaded;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element has been constructed and added to the object tree.
+		/// </summary>
+		/// <remarks>This event may occur before the element has been measured so should not be relied on for size information.</remarks>
+		public event EventHandler? Loaded
+		{
+			add
+			{
+				_loaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+				if (_isLoadedFired)
+					_loaded?.Invoke(this, EventArgs.Empty);
+
+			}
+			remove
+			{
+				_loaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element is no longer connected to the main object tree.
+		/// </summary>
+		public event EventHandler? Unloaded
+		{
+			add
+			{
+				_unloaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+			remove
+			{
+				_unloaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.WindowChanged
+		{
+			add => _windowChanged += value;
+			remove => _windowChanged -= value;
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.PlatformContainerViewChanged
+		{
+			add => _platformContainerViewChanged += value;
+			remove => _platformContainerViewChanged -= value;
+		}
+
+		void SendLoaded() => SendLoaded(true);
+		void SendLoaded(bool updateWiring)
+		{
+			if (_isLoadedFired)
+				return;
+
+			_isLoadedFired = true;
+			_loaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching unloaded we need to verify
+			// unloaded is still correctly being watched for.
+
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+				return;
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		static void OnWindowChanged(BindableObject bindable, object? oldValue, object? newValue)
+		{
+			if (bindable is not VisualElement visualElement)
+				return;
+
+			var newWindow = (Window?)newValue;
+			var oldWindow = (Window?)oldValue;
+
+			visualElement.UpdatePlatformUnloadedLoadedWiring(newWindow, oldWindow);
+			visualElement.InvalidateStateTriggers(newValue != null);
+			visualElement._windowChanged?.Invoke(visualElement, EventArgs.Empty);
+		}
+
+		void OnWindowHandlerChanged(object? sender, EventArgs e)
+		{
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		// We only want to wire up to platform loaded events
+		// if the user is watching for them. Otherwise
+		// this will get wired up for every single VE that's on 
+		// the screen
+		void UpdatePlatformUnloadedLoadedWiring(Window? newWindow, Window? oldWindow = null)
+		{
+			// If I'm not attached to a window and I haven't started watching any platform events
+			// then it's not useful to wire anything up. We will just wait until
+			// This VE gets connected to the xplat Window before wiring up any events
+			if (!_watchingPlatformLoaded && newWindow is null)
+				return;
+
+			if (_unloaded is null && _loaded is null)
+			{
+				if (newWindow is not null)
+					newWindow.HandlerChanged -= OnWindowHandlerChanged;
+
+#if PLATFORM
+				_loadedUnloadedToken?.Dispose();
+				_loadedUnloadedToken = null;
+#endif
+
+				_watchingPlatformLoaded = false;
+				return;
+			}
+			else if (oldWindow is not null)
+			{
+				oldWindow.HandlerChanged -= OnWindowHandlerChanged;
+				_watchingPlatformLoaded = false;
+
+				if (newWindow is null)
+				{
+					// This will take care of cleaning up any pending unloaded events
+					HandlePlatformUnloadedLoaded();
+					return;
+				}
+			}
+
+			if (!_watchingPlatformLoaded)
+			{
+				if (newWindow is not null)
+					newWindow.HandlerChanged += OnWindowHandlerChanged;
+
+				_watchingPlatformLoaded = true;
+			}
+
+			HandlePlatformUnloadedLoaded();
+		}
+
+		partial void HandlePlatformUnloadedLoaded();
+
+		internal IView? ParentView => ((this as IView)?.Parent as IView);
+#nullable disable
+
+
+		public class FocusRequestArgs : EventArgs
+		{
+			public bool Focus { get; set; }
+
+			public bool Result { get; set; }
+		}
+
+		public class VisibilityConverter : TypeConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				=> sourceType == typeof(string);
+
+			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				=> true;
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				// IMPORTANT! Update VisibilityDesignTypeConverter.IsValid if making changes here
+				var strValue = value?.ToString()?.Trim();
+
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					if (strValue.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
+						return true;
+					if (strValue.Equals("visible", StringComparison.OrdinalIgnoreCase))
+						return true;
+					if (strValue.Equals(bool.FalseString, StringComparison.OrdinalIgnoreCase))
+						return false;
+					if (strValue.Equals("hidden", StringComparison.OrdinalIgnoreCase))
+						return false;
+					if (strValue.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+						return false;
+				}
+				throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}.", strValue, typeof(bool)));
+			}
+
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (value is not bool visibility)
+					throw new NotSupportedException();
+After:
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+			}
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			}
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+		protected void RefreshIsEnabledProperty() =>
+			this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the InputTransparentCore property will change.
+		/// </summary>
+		private protected void RefreshInputTransparentProperty()
+		{
+			// This method does not need to call the
+			// this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			// method because none of the derived types will affect this view. All we
+			// need to do is propagate the new value to all the children.
+
+			(this as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		void UpdateBoundsComponents(Rect bounds)
+		{
+			_frame = bounds;
+
+			BatchBegin();
+
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+				{
+					return;
+				}
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+		}
+
+		private protected override void OnHandlerChangedCore()
+		{
+			base.OnHandlerChangedCore();
+
+			IsPlatformEnabled = Handler != null;
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+				{
+					return Background;
+				}
+
+				if (BackgroundColor.IsNotDefault())
+				{
+					return new SolidColorBrush(BackgroundColor);
+				}
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+					{
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+					}
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+					{
+						(bindable as VisualElement)?.NotifyShadowChanges();
+					}
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+
+		/// <inheritdoc/>
+		void IView.InvalidateArrange()
+		{
+		}
+
+		/// <inheritdoc/>
+		Size IView.Measure(double widthConstraint, double heightConstraint)
+		{
+			DesiredSize = MeasureOverride(widthConstraint, heightConstraint);
+			return DesiredSize;
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+		{
+			if (!this.IsSet(SemanticProperties.HintProperty) &&
+				!this.IsSet(SemanticProperties.DescriptionProperty) &&
+				!this.IsSet(SemanticProperties.HeadingLevelProperty))
+			{
+				_semantics = null;
+				return _semantics;
+			}
+
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+		}
+
+		static double EnsurePositive(double value)
+		{
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+		}
+
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+				{
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+				}
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(Shadow));
+		}
+
+		void PropagateBindingContextToBrush()
+		{
+			if (Background != null)
+			{
+				SetInheritedBindingContext(Background, BindingContext);
+			}
+		}
+
+		void PropagateBindingContextToShadow()
+		{
+			if (Shadow != null)
+			{
+				SetInheritedBindingContext(Shadow, BindingContext);
+			}
+		}
+
+		/// <summary>
+		/// Indicates if an element is connected to the main object tree.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get
+			{
+#if PLATFORM
+				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
+#else
+				bool isLoaded = Window != null;
+#endif
+
+				return isLoaded;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element has been constructed and added to the object tree.
+		/// </summary>
+		/// <remarks>This event may occur before the element has been measured so should not be relied on for size information.</remarks>
+		public event EventHandler? Loaded
+		{
+			add
+			{
+				_loaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+				if (_isLoadedFired)
+				{
+					_loaded?.Invoke(this, EventArgs.Empty);
+				}
+			}
+			remove
+			{
+				_loaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element is no longer connected to the main object tree.
+		/// </summary>
+		public event EventHandler? Unloaded
+		{
+			add
+			{
+				_unloaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+			remove
+			{
+				_unloaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.WindowChanged
+		{
+			add => _windowChanged += value;
+			remove => _windowChanged -= value;
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.PlatformContainerViewChanged
+		{
+			add => _platformContainerViewChanged += value;
+			remove => _platformContainerViewChanged -= value;
+		}
+
+		void SendLoaded() => SendLoaded(true);
+		void SendLoaded(bool updateWiring)
+		{
+			if (_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = true;
+			_loaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching unloaded we need to verify
+			// unloaded is still correctly being watched for.
+
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		static void OnWindowChanged(BindableObject bindable, object? oldValue, object? newValue)
+		{
+			if (bindable is not VisualElement visualElement)
+			{
+				return;
+			}
+
+			var newWindow = (Window?)newValue;
+			var oldWindow = (Window?)oldValue;
+
+			visualElement.UpdatePlatformUnloadedLoadedWiring(newWindow, oldWindow);
+			visualElement.InvalidateStateTriggers(newValue != null);
+			visualElement._windowChanged?.Invoke(visualElement, EventArgs.Empty);
+		}
+
+		void OnWindowHandlerChanged(object? sender, EventArgs e)
+		{
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		// We only want to wire up to platform loaded events
+		// if the user is watching for them. Otherwise
+		// this will get wired up for every single VE that's on 
+		// the screen
+		void UpdatePlatformUnloadedLoadedWiring(Window? newWindow, Window? oldWindow = null)
+		{
+			// If I'm not attached to a window and I haven't started watching any platform events
+			// then it's not useful to wire anything up. We will just wait until
+			// This VE gets connected to the xplat Window before wiring up any events
+			if (!_watchingPlatformLoaded && newWindow is null)
+			{
+				return;
+			}
+
+			if (_unloaded is null && _loaded is null)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged -= OnWindowHandlerChanged;
+				}
+
+#if PLATFORM
+				_loadedUnloadedToken?.Dispose();
+				_loadedUnloadedToken = null;
+#endif
+
+				_watchingPlatformLoaded = false;
+				return;
+			}
+			else if (oldWindow is not null)
+			{
+				oldWindow.HandlerChanged -= OnWindowHandlerChanged;
+				_watchingPlatformLoaded = false;
+
+				if (newWindow is null)
+				{
+					// This will take care of cleaning up any pending unloaded events
+					HandlePlatformUnloadedLoaded();
+					return;
+				}
+			}
+
+			if (!_watchingPlatformLoaded)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged += OnWindowHandlerChanged;
+				}
+
+				_watchingPlatformLoaded = true;
+			}
+
+			HandlePlatformUnloadedLoaded();
+		}
+
+		partial void HandlePlatformUnloadedLoaded();
+
+		internal IView? ParentView => ((this as IView)?.Parent as IView);
+#nullable disable
+
+
+		public class FocusRequestArgs : EventArgs
+		{
+			public bool Focus { get; set; }
+
+			public bool Result { get; set; }
+		}
+
+		public class VisibilityConverter : TypeConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				=> sourceType == typeof(string);
+
+			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				=> true;
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				// IMPORTANT! Update VisibilityDesignTypeConverter.IsValid if making changes here
+				var strValue = value?.ToString()?.Trim();
+
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					if (strValue.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals("visible", StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals(bool.FalseString, StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("hidden", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+				}
+				throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}.", strValue, typeof(bool)));
+			}
+
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (value is not bool visibility)
+				{
+					throw new NotSupportedException();
+				}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+After:
+		static object CoerceIsEnabledProperty(object? sender, PropertyChangedEventArgs e)
+*/
+(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.FlowDirectionProperty.PropertyName);
+		}
+
+		static object CoerceIsEnabledProperty(BindableObject bindable, object value)
+		{
+			if (
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+				return;
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		static void OnWindowChanged(BindableObject bindable, object? oldValue, object? newValue)
+After:
+			if (element == null)
+			{
+				return;
+			}
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+*/
+bindable is VisualElement visualElement)
+			{
+				visualElement._isEnabledExplicit = (bool)value;
+				return visualElement.IsEnabledCore;
+			}
+
+			return false;
+		
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Removed:
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+				return;
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Removed:
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+				return;
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Removed:
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+				return;
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+				UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+*/
+	}
+
+			return false;
+		}
+
+		static void OnIsEnabledPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (bindable is not VisualElement visualElement)
+				return;
+
+			var newWindow = (Window?)newValue;
+			var oldWindow = (Window?)oldValue;
+
+			visualElement.UpdatePlatformUnloadedLoadedWiring(newWindow, oldWindow);
+			visualElement.InvalidateStateTriggers(newValue != null);
+			visualElement._windowChanged?.Invoke(visualElement, EventArgs.Empty);
+		}
+
+		void OnWindowHandlerChanged(object? sender, EventArgs e)
+		{
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		// We only want to wire up to platform loaded events
+		// if the user is watching for them. Otherwise
+		// this will get wired up for every single VE that's on 
+		// the screen
+		void UpdatePlatformUnloadedLoadedWiring(Window? newWindow, Window? oldWindow = null)
+		{
+			// If I'm not attached to a window and I haven't started watching any platform events
+			// then it's not useful to wire anything up. We will just wait until
+			// This VE gets connected to the xplat Window before wiring up any events
+			if (!_watchingPlatformLoaded && newWindow is null)
+				return;
+
+			if (_unloaded is null && _loaded is null)
+			{
+				if (newWindow is not null)
+					newWindow.HandlerChanged -= OnWindowHandlerChanged;
+
+#if PLATFORM
+				_loadedUnloadedToken?.Dispose();
+				_loadedUnloadedToken = null;
+#endif
+
+				_watchingPlatformLoaded = false;
+				return;
+			}
+			else if (oldWindow is not null)
+			{
+				oldWindow.HandlerChanged -= OnWindowHandlerChanged;
+				_watchingPlatformLoaded = false;
+
+				if (newWindow is null)
+				{
+					// This will take care of cleaning up any pending unloaded events
+					HandlePlatformUnloadedLoaded();
+					return;
+				}
+			}
+
+			if (!_watchingPlatformLoaded)
+			{
+				if (newWindow is not null)
+					newWindow.HandlerChanged += OnWindowHandlerChanged;
+
+				_watchingPlatformLoaded = true;
+			}
+
+			HandlePlatformUnloadedLoaded();
+		}
+
+		partial void HandlePlatformUnloadedLoaded();
+
+		internal IView? ParentView => ((this as IView)?.Parent as IView);
+#nullable disable
+
+
+		public class FocusRequestArgs : EventArgs
+		{
+			public bool Focus { get; set; }
+
+			public bool Result { get; set; }
+After:
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+*/
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+		public class VisibilityConverter : TypeConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				=> sourceType == typeof(string);
+
+			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				=> true;
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				// IMPORTANT! Update VisibilityDesignTypeConverter.IsValid if making changes here
+				var strValue = value?.ToString()?.Trim();
+
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					if (strValue.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
+						return true;
+					if (strValue.Equals("visible", StringComparison.OrdinalIgnoreCase))
+						return true;
+					if (strValue.Equals(bool.FalseString, StringComparison.OrdinalIgnoreCase))
+						return false;
+					if (strValue.Equals("hidden", StringComparison.OrdinalIgnoreCase))
+						return false;
+					if (strValue.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+						return false;
+				}
+				throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}.", strValue, typeof(bool)));
+			}
+
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (value is not bool visibility)
+					throw new NotSupportedException();
+				return visibility.ToString();
+			}
+After:
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+*/
+			}
+
+			element.ChangeVisualState();
+
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.IsEnabledProperty.PropertyName);
+		}
+
+		static object CoerceInputTransparentProperty(BindableObject bindable, object value)
+		{
+			if (bindable is VisualElement visualElement)
+			{
+				visualElement._inputTransparentExplicit = (bool)value;
+				return visualElement.InputTransparentCore;
+			}
+
+			return false;
+		}
+
+		static void OnInputTransparentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			(bindable as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		static void OnIsFocusedPropertyChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var element = (VisualElement)bindable;
+
+			if (element == null)
+			{
+				return;
+			}
+
+			var isFocused = (bool)newvalue;
+			if (isFocused)
+			{
+				element.OnFocused();
+			}
+			else
+			{
+				element.OnUnfocus();
+			}
+
+			element.ChangeVisualState();
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+			}
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			}
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+		protected void RefreshIsEnabledProperty() =>
+			this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the InputTransparentCore property will change.
+		/// </summary>
+		private protected void RefreshInputTransparentProperty()
+		{
+			// This method does not need to call the
+			// this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			// method because none of the derived types will affect this view. All we
+			// need to do is propagate the new value to all the children.
+
+			(this as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		void UpdateBoundsComponents(Rect bounds)
+		{
+			_frame = bounds;
+
+			BatchBegin();
+
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+				{
+					return;
+				}
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+		}
+
+		private protected override void OnHandlerChangedCore()
+		{
+			base.OnHandlerChangedCore();
+
+			IsPlatformEnabled = Handler != null;
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+				{
+					return Background;
+				}
+
+				if (BackgroundColor.IsNotDefault())
+				{
+					return new SolidColorBrush(BackgroundColor);
+				}
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+					{
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+					}
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+					{
+						(bindable as VisualElement)?.NotifyShadowChanges();
+					}
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+
+		/// <inheritdoc/>
+		void IView.InvalidateArrange()
+		{
+		}
+
+		/// <inheritdoc/>
+		Size IView.Measure(double widthConstraint, double heightConstraint)
+		{
+			DesiredSize = MeasureOverride(widthConstraint, heightConstraint);
+			return DesiredSize;
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+		{
+			if (!this.IsSet(SemanticProperties.HintProperty) &&
+				!this.IsSet(SemanticProperties.DescriptionProperty) &&
+				!this.IsSet(SemanticProperties.HeadingLevelProperty))
+			{
+				_semantics = null;
+				return _semantics;
+			}
+
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+		}
+
+		static double EnsurePositive(double value)
+		{
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+		}
+
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+				{
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+				}
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(Shadow));
+		}
+
+		void PropagateBindingContextToBrush()
+		{
+			if (Background != null)
+			{
+				SetInheritedBindingContext(Background, BindingContext);
+			}
+		}
+
+		void PropagateBindingContextToShadow()
+		{
+			if (Shadow != null)
+			{
+				SetInheritedBindingContext(Shadow, BindingContext);
+			}
+		}
+
+		/// <summary>
+		/// Indicates if an element is connected to the main object tree.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get
+			{
+#if PLATFORM
+				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
+#else
+				bool isLoaded = Window != null;
+#endif
+
+				return isLoaded;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element has been constructed and added to the object tree.
+		/// </summary>
+		/// <remarks>This event may occur before the element has been measured so should not be relied on for size information.</remarks>
+		public event EventHandler? Loaded
+		{
+			add
+			{
+				_loaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+				if (_isLoadedFired)
+				{
+					_loaded?.Invoke(this, EventArgs.Empty);
+				}
+			}
+			remove
+			{
+				_loaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element is no longer connected to the main object tree.
+		/// </summary>
+		public event EventHandler? Unloaded
+		{
+			add
+			{
+				_unloaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+			remove
+			{
+				_unloaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.WindowChanged
+		{
+			add => _windowChanged += value;
+			remove => _windowChanged -= value;
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.PlatformContainerViewChanged
+		{
+			add => _platformContainerViewChanged += value;
+			remove => _platformContainerViewChanged -= value;
+		}
+
+		void SendLoaded() => SendLoaded(true);
+		void SendLoaded(bool updateWiring)
+		{
+			if (_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = true;
+			_loaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching unloaded we need to verify
+			// unloaded is still correctly being watched for.
+
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		static void OnWindowChanged(BindableObject bindable, object? oldValue, object? newValue)
+		{
+			if (bindable is not VisualElement visualElement)
+			{
+				return;
+			}
+
+			var newWindow = (Window?)newValue;
+			var oldWindow = (Window?)oldValue;
+
+			visualElement.UpdatePlatformUnloadedLoadedWiring(newWindow, oldWindow);
+			visualElement.InvalidateStateTriggers(newValue != null);
+			visualElement._windowChanged?.Invoke(visualElement, EventArgs.Empty);
+		}
+
+		void OnWindowHandlerChanged(object? sender, EventArgs e)
+		{
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		// We only want to wire up to platform loaded events
+		// if the user is watching for them. Otherwise
+		// this will get wired up for every single VE that's on 
+		// the screen
+		void UpdatePlatformUnloadedLoadedWiring(Window? newWindow, Window? oldWindow = null)
+		{
+			// If I'm not attached to a window and I haven't started watching any platform events
+			// then it's not useful to wire anything up. We will just wait until
+			// This VE gets connected to the xplat Window before wiring up any events
+			if (!_watchingPlatformLoaded && newWindow is null)
+			{
+				return;
+			}
+
+			if (_unloaded is null && _loaded is null)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged -= OnWindowHandlerChanged;
+				}
+
+#if PLATFORM
+				_loadedUnloadedToken?.Dispose();
+				_loadedUnloadedToken = null;
+#endif
+
+				_watchingPlatformLoaded = false;
+				return;
+			}
+			else if (oldWindow is not null)
+			{
+				oldWindow.HandlerChanged -= OnWindowHandlerChanged;
+				_watchingPlatformLoaded = false;
+
+				if (newWindow is null)
+				{
+					// This will take care of cleaning up any pending unloaded events
+					HandlePlatformUnloadedLoaded();
+					return;
+				}
+			}
+
+			if (!_watchingPlatformLoaded)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged += OnWindowHandlerChanged;
+				}
+
+				_watchingPlatformLoaded = true;
+			}
+
+			HandlePlatformUnloadedLoaded();
+		}
+
+		partial void HandlePlatformUnloadedLoaded();
+
+		internal IView? ParentView => ((this as IView)?.Parent as IView);
+#nullable disable
+
+
+		public class FocusRequestArgs : EventArgs
+		{
+			public bool Focus { get; set; }
+
+			public bool Result { get; set; }
+		}
+
+		public class VisibilityConverter : TypeConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				=> sourceType == typeof(string);
+
+			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				=> true;
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				// IMPORTANT! Update VisibilityDesignTypeConverter.IsValid if making changes here
+				var strValue = value?.ToString()?.Trim();
+
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					if (strValue.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals("visible", StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals(bool.FalseString, StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("hidden", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+				}
+				throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}.", strValue, typeof(bool)));
+			}
+
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (value is not bool visibility)
+				{
+					throw new NotSupportedException();
+				}
+
+				return visibility.ToString();
+			}
+		}
+
+		static void OnRequestChanged(BindableObject bindable, object oldvalue, object newvalue)
+		{
+			var constraint = LayoutConstraint.None;
+			var element = (VisualElement)bindable;
+			if (element.WidthRequest >= 0 && element.MinimumWidthRequest >= 0)
+			{
+				constraint |= LayoutConstraint.HorizontallyFixed;
+			}
+			if (element.HeightRequest >= 0 && element.MinimumHeightRequest >= 0)
+			{
+				constraint |= LayoutConstraint.VerticallyFixed;
+			}
+
+			element.SelfConstraint = constraint;
+
+			if (element is IView fe)
+			{
+				fe.Handler?.UpdateValue(nameof(IView.Width));
+				fe.Handler?.UpdateValue(nameof(IView.Height));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MinimumWidth));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumHeight));
+				fe.Handler?.UpdateValue(nameof(IView.MaximumWidth));
+			}
+
+			((VisualElement)bindable).InvalidateMeasureInternal(InvalidationTrigger.SizeRequestChanged);
+		}
+
+		void OnUnfocus() => Unfocused?.Invoke(this, new FocusEventArgs(this, false));
+
+		bool IFlowDirectionController.ApplyEffectiveFlowDirectionToChildContainer => true;
+
+		void IPropertyPropagationController.PropagatePropertyChanged(string propertyName)
+		{
+			if (propertyName == null || propertyName == IsEnabledProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+			}
+
+			if (propertyName == null || propertyName == InputTransparentProperty.PropertyName)
+			{
+				this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			}
+
+			PropertyPropagationExtensions.PropagatePropertyChanged(propertyName, this, ((IVisualTreeElement)this).GetVisualChildren());
+		}
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the <see cref="IsEnabledCore"/> property will change.
+		/// </summary>
+		protected void RefreshIsEnabledProperty() =>
+			this.RefreshPropertyValue(IsEnabledProperty, _isEnabledExplicit);
+
+		/// <summary>
+		/// This method must always be called if some event occurs and the value of
+		/// the InputTransparentCore property will change.
+		/// </summary>
+		private protected void RefreshInputTransparentProperty()
+		{
+			// This method does not need to call the
+			// this.RefreshPropertyValue(InputTransparentProperty, _inputTransparentExplicit);
+			// method because none of the derived types will affect this view. All we
+			// need to do is propagate the new value to all the children.
+
+			(this as IPropertyPropagationController)?.PropagatePropertyChanged(VisualElement.InputTransparentProperty.PropertyName);
+		}
+
+		void UpdateBoundsComponents(Rect bounds)
+		{
+			_frame = bounds;
+
+			BatchBegin();
+
+			X = bounds.X;
+			Y = bounds.Y;
+			Width = bounds.Width;
+			Height = bounds.Height;
+
+			SizeAllocated(Width, Height);
+			SizeChanged?.Invoke(this, EventArgs.Empty);
+
+			BatchCommit();
+		}
+
+#nullable enable
+		Semantics? _semantics;
+		bool _isLoadedFired;
+		EventHandler? _loaded;
+		EventHandler? _unloaded;
+		bool _watchingPlatformLoaded;
+		Rect _frame = new Rect(0, 0, -1, -1);
+		event EventHandler? _windowChanged;
+		event EventHandler? _platformContainerViewChanged;
+
+		/// <summary>
+		/// Gets or sets the frame this element resides in on screen.
+		/// </summary>
+		public Rect Frame
+		{
+			get => _frame;
+			set
+			{
+				if (_frame == value)
+				{
+					return;
+				}
+
+				UpdateBoundsComponents(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the <see cref="IViewHandler"/> associated to this element.
+		/// </summary>
+		new public IViewHandler? Handler
+		{
+			get => (IViewHandler?)base.Handler;
+			set => base.Handler = value;
+		}
+
+		private protected override void OnHandlerChangedCore()
+		{
+			base.OnHandlerChangedCore();
+
+			IsPlatformEnabled = Handler != null;
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		/// <inheritdoc/>
+		Paint? IView.Background
+		{
+			get
+			{
+				if (!Brush.IsNullOrEmpty(Background))
+				{
+					return Background;
+				}
+
+				if (BackgroundColor.IsNotDefault())
+				{
+					return new SolidColorBrush(BackgroundColor);
+				}
+
+				return null;
+			}
+		}
+
+		/// <inheritdoc/>
+		IShape IView.Clip => Clip;
+
+		/// <inheritdoc/>
+		IShadow IView.Shadow => Shadow;
+
+		/// <summary>Bindable property for <see cref="Shadow"/>.</summary>
+		public static readonly BindableProperty ShadowProperty =
+ 			BindableProperty.Create(nameof(Shadow), typeof(Shadow), typeof(VisualElement), defaultValue: null,
+				propertyChanging: (bindable, oldvalue, newvalue) =>
+				{
+					if (oldvalue != null)
+					{
+						(bindable as VisualElement)?.StopNotifyingShadowChanges();
+					}
+				},
+				propertyChanged: (bindable, oldvalue, newvalue) =>
+				{
+					if (newvalue != null)
+					{
+						(bindable as VisualElement)?.NotifyShadowChanges();
+					}
+				});
+
+		/// <summary>
+		/// Gets or sets the shadow effect cast by the element. This is a bindable property.
+		/// </summary>
+		public Shadow Shadow
+		{
+			get { return (Shadow)GetValue(ShadowProperty); }
+			set { SetValue(ShadowProperty, value); }
+		}
+
+		/// <summary>Bindable property for <see cref="ZIndex"/>.</summary>
+		public static readonly BindableProperty ZIndexProperty =
+			BindableProperty.Create(nameof(ZIndex), typeof(int), typeof(VisualElement), default(int),
+				propertyChanged: ZIndexPropertyChanged);
+
+		static void ZIndexPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+		{
+			if (bindable is IView view)
+			{
+				view.Handler?.Invoke(nameof(IView.ZIndex));
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the front-to-back z-index of an element within a layout. This is a bindable property.
+		/// </summary>
+		/// <remarks>An element with a higher <see cref="ZIndex"/> value will be shown on top of an element with a lower <see cref="ZIndex"/> value.</remarks>
+		public int ZIndex
+		{
+			get { return (int)GetValue(ZIndexProperty); }
+			set { SetValue(ZIndexProperty, value); }
+		}
+
+		/// <summary>
+		/// Gets the size that this element computed during the measure pass of the layout process.
+		/// </summary>
+		public Size DesiredSize { get; protected set; }
+
+		/// <summary>
+		/// Positions child objects and determines a size for an element.
+		/// </summary>
+		/// <param name="bounds">The final size that the parent computes for the child in layout, provided as a <see cref="Rect"/> value.</param>
+		/// <remarks>Parent objects that implement custom layout for their child elements should call this method from their layout override implementations to form a recursive layout update.</remarks>
+		public void Arrange(Rect bounds)
+		{
+			Layout(bounds);
+		}
+
+		/// <inheritdoc/>
+		Size IView.Arrange(Rect bounds)
+		{
+			return ArrangeOverride(bounds);
+		}
+
+		/// <summary>
+		/// Allows subclasses to override <see cref="Arrange(Rect)"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old <see cref="Arrange(Rect)"/> method.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <returns>The resulting size of this element's frame by the platform.</returns>
+		protected virtual Size ArrangeOverride(Rect bounds)
+		{
+			Frame = this.ComputeFrame(bounds);
+			Handler?.PlatformArrange(Frame);
+			return Frame.Size;
+		}
+
+		/// <summary>
+		/// Updates the bounds of the element during the layout cycle.
+		/// </summary>
+		/// <param name="bounds">The new bounds of the element.</param>
+		/// <remarks>Calling this method will trigger a layout cycle for the sub-tree of this element.</remarks>
+		public void Layout(Rect bounds)
+		{
+			Bounds = bounds;
+		}
+
+		/// <inheritdoc/>
+		void IView.InvalidateMeasure()
+		{
+			InvalidateMeasureOverride();
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses (e.g., Layout) to override <see cref="InvalidateMeasure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the <see cref="InvalidateMeasure"/> method.
+		/// </summary>
+		protected virtual void InvalidateMeasureOverride() => Handler?.Invoke(nameof(IView.InvalidateMeasure));
+
+		/// <inheritdoc/>
+		void IView.InvalidateArrange()
+		{
+		}
+
+		/// <inheritdoc/>
+		Size IView.Measure(double widthConstraint, double heightConstraint)
+		{
+			DesiredSize = MeasureOverride(widthConstraint, heightConstraint);
+			return DesiredSize;
+		}
+
+		/// <summary>
+		/// Provides a way to allow subclasses to override <see cref="Measure"/> even though
+		/// the interface has to be explicitly implemented to avoid conflict with the old Measure method.
+		/// </summary>
+		/// <param name="widthConstraint">The width constraint to request.</param>
+		/// <param name="heightConstraint">The height constraint to request.</param>
+		/// <returns>The requested size that an element wants in order to be displayed on the device.</returns>
+		protected virtual Size MeasureOverride(double widthConstraint, double heightConstraint)
+		{
+			return this.ComputeDesiredSize(widthConstraint, heightConstraint);
+		}
+
+		/// <inheritdoc/>
+		bool IView.IsFocused
+		{
+			get => (bool)GetValue(IsFocusedProperty);
+			set => SetValue(IsFocusedPropertyKey, value, SetterSpecificity.FromHandler);
+		}
+
+		/// <inheritdoc/>
+		FlowDirection IView.FlowDirection => FlowDirection;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.HorizontalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Primitives.LayoutAlignment IView.VerticalLayoutAlignment => default;
+
+		/// <inheritdoc/>
+		Visibility IView.Visibility => IsVisible.ToVisibility();
+
+		/// <inheritdoc/>
+		Semantics? IView.Semantics => UpdateSemantics();
+
+		private protected virtual Semantics? UpdateSemantics()
+		{
+			if (!this.IsSet(SemanticProperties.HintProperty) &&
+				!this.IsSet(SemanticProperties.DescriptionProperty) &&
+				!this.IsSet(SemanticProperties.HeadingLevelProperty))
+			{
+				_semantics = null;
+				return _semantics;
+			}
+
+			_semantics ??= new Semantics();
+			_semantics.Description = SemanticProperties.GetDescription(this);
+			_semantics.HeadingLevel = SemanticProperties.GetHeadingLevel(this);
+			_semantics.Hint = SemanticProperties.GetHint(this);
+			return _semantics;
+		}
+
+		static double EnsurePositive(double value)
+		{
+			if (value < 0)
+			{
+				return 0;
+			}
+
+			return value;
+		}
+
+		/// <inheritdoc/>
+		double IView.Width
+		{
+			get
+			{
+				if (!IsSet(WidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = WidthRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.Height
+		{
+			get
+			{
+				if (!IsSet(HeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = HeightRequest;
+
+				if (value == -1)
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumWidth
+		{
+			get
+			{
+				if (!IsSet(MinimumWidthRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MinimumHeight
+		{
+			get
+			{
+				if (!IsSet(MinimumHeightRequestProperty))
+				{
+					return Primitives.Dimension.Unset;
+				}
+
+				// Access once up front to avoid multiple GetValue calls
+				var value = MinimumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumWidth
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumWidthRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		double IView.MaximumHeight
+		{
+			get
+			{
+				// Access once up front to avoid multiple GetValue calls
+				var value = MaximumHeightRequest;
+				value = EnsurePositive(value);
+				return value;
+			}
+		}
+
+		/// <inheritdoc/>
+		Thickness IView.Margin => Thickness.Zero;
+
+		/// <inheritdoc/>
+		IElementHandler? IElement.Handler
+		{
+			get => base.Handler;
+			set
+			{
+				if (value != null && value is not IViewHandler)
+				{
+					throw new InvalidOperationException("Handler must be of type IViewHandler");
+				}
+
+				base.Handler = value;
+			}
+		}
+
+		void NotifyShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, BindingContext);
+				_shadowChanged ??= (sender, e) => OnPropertyChanged(nameof(Shadow));
+				_shadowProxy ??= new();
+				_shadowProxy.Subscribe(shadow, _shadowChanged);
+			}
+		}
+
+		void StopNotifyingShadowChanges()
+		{
+			var shadow = Shadow;
+
+			if (shadow is not null)
+			{
+				SetInheritedBindingContext(shadow, null);
+				_shadowProxy?.Unsubscribe();
+			}
+		}
+
+		void OnShadowChanged(object? sender, PropertyChangedEventArgs e)
+		{
+			OnPropertyChanged(nameof(Shadow));
+		}
+
+		void PropagateBindingContextToBrush()
+		{
+			if (Background != null)
+			{
+				SetInheritedBindingContext(Background, BindingContext);
+			}
+		}
+
+		void PropagateBindingContextToShadow()
+		{
+			if (Shadow != null)
+			{
+				SetInheritedBindingContext(Shadow, BindingContext);
+			}
+		}
+
+		/// <summary>
+		/// Indicates if an element is connected to the main object tree.
+		/// </summary>
+		public bool IsLoaded
+		{
+			get
+			{
+#if PLATFORM
+				bool isLoaded = (Handler as IPlatformViewHandler)?.PlatformView?.IsLoaded() == true;
+#else
+				bool isLoaded = Window != null;
+#endif
+
+				return isLoaded;
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element has been constructed and added to the object tree.
+		/// </summary>
+		/// <remarks>This event may occur before the element has been measured so should not be relied on for size information.</remarks>
+		public event EventHandler? Loaded
+		{
+			add
+			{
+				_loaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+				if (_isLoadedFired)
+				{
+					_loaded?.Invoke(this, EventArgs.Empty);
+				}
+			}
+			remove
+			{
+				_loaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <summary>
+		/// Occurs when an element is no longer connected to the main object tree.
+		/// </summary>
+		public event EventHandler? Unloaded
+		{
+			add
+			{
+				_unloaded += value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+			remove
+			{
+				_unloaded -= value;
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.WindowChanged
+		{
+			add => _windowChanged += value;
+			remove => _windowChanged -= value;
+		}
+
+		/// <inheritdoc/>
+		event EventHandler? IControlsVisualElement.PlatformContainerViewChanged
+		{
+			add => _platformContainerViewChanged += value;
+			remove => _platformContainerViewChanged -= value;
+		}
+
+		void SendLoaded() => SendLoaded(true);
+		void SendLoaded(bool updateWiring)
+		{
+			if (_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = true;
+			_loaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching unloaded we need to verify
+			// unloaded is still correctly being watched for.
+
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		void SendUnloaded() => SendUnloaded(true);
+		void SendUnloaded(bool updateWiring)
+		{
+			if (!_isLoadedFired)
+			{
+				return;
+			}
+
+			_isLoadedFired = false;
+			_unloaded?.Invoke(this, EventArgs.Empty);
+
+			// If the user is also watching loaded we need to verify
+			// loaded is still correctly being watched for.
+			if (updateWiring)
+			{
+				UpdatePlatformUnloadedLoadedWiring(Window);
+			}
+		}
+
+		static void OnWindowChanged(BindableObject bindable, object? oldValue, object? newValue)
+		{
+			if (bindable is not VisualElement visualElement)
+			{
+				return;
+			}
+
+			var newWindow = (Window?)newValue;
+			var oldWindow = (Window?)oldValue;
+
+			visualElement.UpdatePlatformUnloadedLoadedWiring(newWindow, oldWindow);
+			visualElement.InvalidateStateTriggers(newValue != null);
+			visualElement._windowChanged?.Invoke(visualElement, EventArgs.Empty);
+		}
+
+		void OnWindowHandlerChanged(object? sender, EventArgs e)
+		{
+			UpdatePlatformUnloadedLoadedWiring(Window);
+		}
+
+		// We only want to wire up to platform loaded events
+		// if the user is watching for them. Otherwise
+		// this will get wired up for every single VE that's on 
+		// the screen
+		void UpdatePlatformUnloadedLoadedWiring(Window? newWindow, Window? oldWindow = null)
+		{
+			// If I'm not attached to a window and I haven't started watching any platform events
+			// then it's not useful to wire anything up. We will just wait until
+			// This VE gets connected to the xplat Window before wiring up any events
+			if (!_watchingPlatformLoaded && newWindow is null)
+			{
+				return;
+			}
+
+			if (_unloaded is null && _loaded is null)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged -= OnWindowHandlerChanged;
+				}
+
+#if PLATFORM
+				_loadedUnloadedToken?.Dispose();
+				_loadedUnloadedToken = null;
+#endif
+
+				_watchingPlatformLoaded = false;
+				return;
+			}
+			else if (oldWindow is not null)
+			{
+				oldWindow.HandlerChanged -= OnWindowHandlerChanged;
+				_watchingPlatformLoaded = false;
+
+				if (newWindow is null)
+				{
+					// This will take care of cleaning up any pending unloaded events
+					HandlePlatformUnloadedLoaded();
+					return;
+				}
+			}
+
+			if (!_watchingPlatformLoaded)
+			{
+				if (newWindow is not null)
+				{
+					newWindow.HandlerChanged += OnWindowHandlerChanged;
+				}
+
+				_watchingPlatformLoaded = true;
+			}
+
+			HandlePlatformUnloadedLoaded();
+		}
+
+		partial void HandlePlatformUnloadedLoaded();
+
+		internal IView? ParentView => ((this as IView)?.Parent as IView);
+#nullable disable
+
+
+		public class FocusRequestArgs : EventArgs
+		{
+			public bool Focus { get; set; }
+
+			public bool Result { get; set; }
+		}
+
+		public class VisibilityConverter : TypeConverter
+		{
+			public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				=> sourceType == typeof(string);
+
+			public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				=> true;
+
+			public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+			{
+				// IMPORTANT! Update VisibilityDesignTypeConverter.IsValid if making changes here
+				var strValue = value?.ToString()?.Trim();
+
+				if (!string.IsNullOrEmpty(strValue))
+				{
+					if (strValue.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals("visible", StringComparison.OrdinalIgnoreCase))
+					{
+						return true;
+					}
+
+					if (strValue.Equals(bool.FalseString, StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("hidden", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+
+					if (strValue.Equals("collapse", StringComparison.OrdinalIgnoreCase))
+					{
+						return false;
+					}
+				}
+				throw new InvalidOperationException(string.Format("Cannot convert \"{0}\" into {1}.", strValue, typeof(bool)));
+			}
+
+			public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			{
+				if (value is not bool visibility)
+				{
+					throw new NotSupportedException();
+				}
+
 				return visibility.ToString();
 			}
 		}

@@ -81,13 +81,18 @@ namespace Microsoft.Maui.Controls.Internals
 			_setter = setter;
 
 			if (handlers == null)
+			{
 				return;
+			}
 
 			_handlers = new PropertyChangedProxy[handlers.Length];
 			for (var i = 0; i < handlers.Length; i++)
 			{
 				if (handlers[i] is null)
+				{
 					continue;
+				}
+
 				_handlers[i] = new PropertyChangedProxy(handlers[i].Item1, handlers[i].Item2, this);
 			}
 		}
@@ -105,7 +110,9 @@ namespace Microsoft.Maui.Controls.Internals
 			BindableObject target;
 #if DO_NOT_CHECK_FOR_BINDING_REUSE
 			if (!_weakTarget.TryGetTarget(out target))
+			{
 				return;
+			}
 #else
 			if (!_weakTarget.TryGetTarget(out target) || target == null) {
 				Unapply();
@@ -114,7 +121,11 @@ namespace Microsoft.Maui.Controls.Internals
 #endif
 			object source;
 			if (_weakSource.TryGetTarget(out source) && source != null)
+			{
+			{
 				ApplyCore(source, target, _targetProperty, fromTarget, _specificity);
+			}
+			}
 		}
 
 		// Applies the binding to a new source or target.
@@ -126,7 +137,9 @@ namespace Microsoft.Maui.Controls.Internals
 			var isApplied = IsApplied;
 
 			if (Source != null && isApplied && fromBindingContextChanged)
+			{
 				return;
+			}
 
 			base.Apply(source, bindObj, targetProperty, fromBindingContextChanged, specificity);
 
@@ -153,7 +166,10 @@ namespace Microsoft.Maui.Controls.Internals
 				for (var i = 0; i < _handlers.Length; i++)
 				{
 					if (_handlers[i] == null)
+					{
 						continue;
+					}
+
 					handlers[i] = new Tuple<Func<TSource, object>, string>(_handlers[i].PartGetter, _handlers[i].PropertyName);
 				}
 			}
@@ -171,7 +187,10 @@ namespace Microsoft.Maui.Controls.Internals
 		internal override object GetSourceValue(object value, Type targetPropertyType)
 		{
 			if (Converter != null)
+			{
+			{
 				value = Converter.Convert(value, targetPropertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
 
 			return base.GetSourceValue(value, targetPropertyType);
 		}
@@ -179,7 +198,10 @@ namespace Microsoft.Maui.Controls.Internals
 		internal override object GetTargetValue(object value, Type sourcePropertyType)
 		{
 			if (Converter != null)
+			{
+			{
 				value = Converter.ConvertBack(value, sourcePropertyType, ConverterParameter, CultureInfo.CurrentUICulture);
+			}
 
 			//return base.GetTargetValue(value, sourcePropertyType);
 			return value;
@@ -188,13 +210,17 @@ namespace Microsoft.Maui.Controls.Internals
 		internal override void Unapply(bool fromBindingContextChanged = false)
 		{
 			if (Source != null && fromBindingContextChanged && IsApplied)
+			{
 				return;
+			}
 
 #if (!DO_NOT_CHECK_FOR_BINDING_REUSE)
 			base.Unapply(fromBindingContextChanged:fromBindingContextChanged);
 #endif
 			if (_handlers != null)
+			{
 				Unsubscribe();
+			}
 
 #if (!DO_NOT_CHECK_FOR_BINDING_REUSE)
 			_weakSource.SetTarget(null);
@@ -210,12 +236,214 @@ namespace Microsoft.Maui.Controls.Internals
 			var isTSource = sourceObject is TSource;
 			var mode = this.GetRealizedMode(property);
 			if ((mode == BindingMode.OneWay || mode == BindingMode.OneTime) && fromTarget)
+			{
 				return;
 
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
 
 			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
 				Subscribe((TSource)sourceObject);
+After:
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+				Subscribe((TSource)sourceObject);
+After:
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+				Subscribe((TSource)sourceObject);
+After:
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+				Subscribe((TSource)sourceObject);
+After:
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+				Subscribe((TSource)sourceObject);
+After:
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+				Subscribe((TSource)sourceObject);
+After:
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+			if (needsGetter)
+After:
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
+
+			if (needsGetter)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (needsGetter)
+After:
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
+
+			if (needsGetter)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (needsGetter)
+After:
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
+
+			if (needsGetter)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			if (needsGetter)
+After:
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
+
+			if (needsGetter)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			if (needsGetter)
+After:
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
+
+			if (needsGetter)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			if (needsGetter)
+After:
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
+
+			if (needsGetter)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+							value = GetSourceValue(retval, property.ReturnType);
+After:
+						{
+							value = GetSourceValue(retval, property.ReturnType);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+							value = GetSourceValue(retval, property.ReturnType);
+After:
+						{
+							value = GetSourceValue(retval, property.ReturnType);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+							value = GetSourceValue(retval, property.ReturnType);
+After:
+						{
+							value = GetSourceValue(retval, property.ReturnType);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+							value = GetSourceValue(retval, property.ReturnType);
+After:
+						{
+							value = GetSourceValue(retval, property.ReturnType);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+							value = GetSourceValue(retval, property.ReturnType);
+After:
+						{
+							value = GetSourceValue(retval, property.ReturnType);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+							value = GetSourceValue(retval, property.ReturnType);
+After:
+						{
+							value = GetSourceValue(retval, property.ReturnType);
+						}
+*/
+			}
+
+			var needsGetter = (mode == BindingMode.TwoWay && !fromTarget) || mode == BindingMode.OneWay || mode == BindingMode.OneTime;
+
+			if (isTSource && (mode == BindingMode.OneWay || mode == BindingMode.TwoWay) && _handlers != null)
+			{
+				Subscribe((TSource)sourceObject);
+			}
 
 			if (needsGetter)
 			{
@@ -226,7 +454,9 @@ namespace Microsoft.Maui.Controls.Internals
 					{
 						(var retval, bool success) = _getter((TSource)sourceObject);
 						if (success) //if the getter failed, return the FallbackValue
+						{
 							value = GetSourceValue(retval, property.ReturnType);
+						}
 					}
 					catch (Exception ex) when (ex is NullReferenceException || ex is KeyNotFoundException || ex is IndexOutOfRangeException || ex is ArgumentOutOfRangeException)
 					{
@@ -269,7 +499,10 @@ namespace Microsoft.Maui.Controls.Internals
 				get
 				{
 					if (Listener != null && Listener.TryGetSource(out var target))
+					{
 						return target;
+					}
+
 					return null;
 				}
 				set
@@ -278,10 +511,14 @@ namespace Microsoft.Maui.Controls.Internals
 					{
 						//Already subscribed
 						if (Listener.TryGetSource(out var source) && ReferenceEquals(value, source))
+						{
+						{
 							return;
+						}
 
 						//clear out previous subscription
 						Listener.Unsubscribe();
+						Listener.Subscribe(value, handler);
 						Listener.Subscribe(value, handler);
 					}
 				}
@@ -300,7 +537,10 @@ namespace Microsoft.Maui.Controls.Internals
 			void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 			{
 				if (!string.IsNullOrEmpty(e.PropertyName) && string.CompareOrdinal(e.PropertyName, PropertyName) != 0)
+				{
+				{
 					return;
+				}
 
 				IDispatcher dispatcher = (sender as BindableObject)?.Dispatcher;
 				dispatcher.DispatchIfRequired(() => _binding.Apply(false));
@@ -312,13 +552,108 @@ namespace Microsoft.Maui.Controls.Internals
 			for (var i = 0; i < _handlers.Length; i++)
 			{
 				if (_handlers[i] == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 					continue;
 				var part = _handlers[i].PartGetter(sourceObject);
 				if (part == null)
 					break;
 				var inpc = part as INotifyPropertyChanged;
 				if (inpc == null)
+After:
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
 					continue;
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+					break;
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+After:
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+					continue;
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+					break;
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+After:
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+					continue;
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+					break;
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+After:
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+					continue;
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+					break;
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+After:
+				{
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+					continue;
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+					break;
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+After:
+				{
+*/
+				{
+					continue;
+				}
+
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+				{
+					break;
+				}
+
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+				{
+					continue;
+				}
+
+				}
+
+				var part = _handlers[i].PartGetter(sourceObject);
+				if (part == null)
+				{
+					break;
+				}
+
+				var inpc = part as INotifyPropertyChanged;
+				if (inpc == null)
+				{
+					continue;
+				}
+
 				_handlers[i].Part = (inpc);
 			}
 		}
@@ -326,7 +661,10 @@ namespace Microsoft.Maui.Controls.Internals
 		void Unsubscribe()
 		{
 			for (var i = 0; i < _handlers.Length; i++)
+			{
 				_handlers[i]?.Listener.Unsubscribe();
+			}
+			}
 		}
 	}
 }

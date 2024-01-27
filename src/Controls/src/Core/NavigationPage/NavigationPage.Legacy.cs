@@ -44,7 +44,9 @@ namespace Microsoft.Maui.Controls
 			FireDisappearing(page);
 
 			if (InternalChildren.Last() == page)
+			{
 				FireAppearing((Page)InternalChildren[NavigationPageController.StackDepth - 2]);
+			}
 
 			var args = new NavigationRequestedEventArgs(page, animated);
 
@@ -56,10 +58,15 @@ namespace Microsoft.Maui.Controls
 				requestPop(this, args);
 
 				if (args.Task != null && !fast)
+				{
 					removed = await args.Task;
+				}
 			}
 
 			if (!removed && !fast)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				return CurrentPage;
 
 			RemoveFromInnerChildren(page);
@@ -68,6 +75,157 @@ namespace Microsoft.Maui.Controls
 
 			if (Popped != null)
 				Popped(this, args);
+After:
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				return CurrentPage;
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+				Popped(this, args);
+After:
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return CurrentPage;
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+				Popped(this, args);
+After:
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return CurrentPage;
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+				Popped(this, args);
+After:
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				return CurrentPage;
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+				Popped(this, args);
+After:
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				return CurrentPage;
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+				Popped(this, args);
+After:
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
+*/
+			{
+				return CurrentPage;
+			}
+
+			RemoveFromInnerChildren(page);
+
+			CurrentPage = (Page)InternalChildren.Last();
+
+			if (Popped != null)
+			{
+				Popped(this, args);
+			}
 
 			return page;
 		}
@@ -120,6 +278,9 @@ namespace Microsoft.Maui.Controls
 		void InsertPageBefore(Page page, Page before)
 		{
 			if (page == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
 
 			if (before == null)
@@ -135,19 +296,247 @@ namespace Microsoft.Maui.Controls
 
 			int index = InternalChildren.IndexOf(before);
 			InternalChildren.Insert(index, page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (before == null)
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+
+			if (!InternalChildren.Contains(before))
+				throw new ArgumentException($"{nameof(before)} must be a child of the NavigationPage", nameof(before));
+
+			if (InternalChildren.Contains(page))
+				throw new ArgumentException("Cannot insert page which is already in the navigation stack");
+
+			_insertPageBeforeRequested?.Invoke(this, new NavigationRequestedEventArgs(page, before, false));
+
+			int index = InternalChildren.IndexOf(before);
+			InternalChildren.Insert(index, page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (before == null)
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+
+			if (!InternalChildren.Contains(before))
+				throw new ArgumentException($"{nameof(before)} must be a child of the NavigationPage", nameof(before));
+
+			if (InternalChildren.Contains(page))
+				throw new ArgumentException("Cannot insert page which is already in the navigation stack");
+
+			_insertPageBeforeRequested?.Invoke(this, new NavigationRequestedEventArgs(page, before, false));
+
+			int index = InternalChildren.IndexOf(before);
+			InternalChildren.Insert(index, page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (before == null)
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+
+			if (!InternalChildren.Contains(before))
+				throw new ArgumentException($"{nameof(before)} must be a child of the NavigationPage", nameof(before));
+
+			if (InternalChildren.Contains(page))
+				throw new ArgumentException("Cannot insert page which is already in the navigation stack");
+
+			_insertPageBeforeRequested?.Invoke(this, new NavigationRequestedEventArgs(page, before, false));
+
+			int index = InternalChildren.IndexOf(before);
+			InternalChildren.Insert(index, page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (before == null)
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+
+			if (!InternalChildren.Contains(before))
+				throw new ArgumentException($"{nameof(before)} must be a child of the NavigationPage", nameof(before));
+
+			if (InternalChildren.Contains(page))
+				throw new ArgumentException("Cannot insert page which is already in the navigation stack");
+
+			_insertPageBeforeRequested?.Invoke(this, new NavigationRequestedEventArgs(page, before, false));
+
+			int index = InternalChildren.IndexOf(before);
+			InternalChildren.Insert(index, page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (before == null)
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+
+			if (!InternalChildren.Contains(before))
+				throw new ArgumentException($"{nameof(before)} must be a child of the NavigationPage", nameof(before));
+
+			if (InternalChildren.Contains(page))
+				throw new ArgumentException("Cannot insert page which is already in the navigation stack");
+
+			_insertPageBeforeRequested?.Invoke(this, new NavigationRequestedEventArgs(page, before, false));
+
+			int index = InternalChildren.IndexOf(before);
+			InternalChildren.Insert(index, page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+
+			if (
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			if (index == 0)
 				RootPage = page;
 
 			// Shouldn't be required?
+After:
+			if (before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (index == 0)
+				RootPage = page;
+
+			// Shouldn't be required?
+After:
+			if (before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (index == 0)
+				RootPage = page;
+
+			// Shouldn't be required?
+After:
+			if (before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			if (index == 0)
+				RootPage = page;
+
+			// Shouldn't be required?
+After:
+			if (before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			if (index == 0)
+				RootPage = page;
+
+			// Shouldn't be required?
+After:
+			if (before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			if (index == 0)
+				RootPage = page;
+
+			// Shouldn't be required?
+After:
+			if (before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+*/
+before == null)
+			{
+				throw new ArgumentNullException($"{nameof(before)} cannot be null.");
+			}
+
+			if (!InternalChildren.Contains(before))
+			{
+				throw new ArgumentException($"{nameof(before)} must be a child of the NavigationPage", nameof(before));
+			}
+
+			if (InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Cannot insert page which is already in the navigation stack");
+			}
+
+			_insertPageBeforeRequested?.Invoke(this, new NavigationRequestedEventArgs(page, before, false));
+
+			int index = InternalChildren.IndexOf(before);
+			InternalChildren.Insert(index, page);
+
+			if (index == 0)
+			{
+				RootPage = page;
+			}
+
+			// Shouldn't be required?
 			if (Width > 0 && Height > 0)
+			{
 				ForceLayout();
+			}
 		}
 
 		async Task PopToRootAsyncInner(bool animated)
 		{
 			if (NavigationPageController.StackDepth == 1)
+			{
+			{
 				return;
+			}
 
 			var previousPage = CurrentPage;
 			SendNavigating();
@@ -170,7 +559,9 @@ namespace Microsoft.Maui.Controls
 				requestPopToRoot(this, args);
 
 				if (args.Task != null)
+				{
 					await args.Task;
+				}
 			}
 
 			PoppedToRoot?.Invoke(this, new PoppedToRootEventArgs(RootPage, childrenToRemove.OfType<Page>().ToList()));
@@ -180,7 +571,10 @@ namespace Microsoft.Maui.Controls
 		async Task PushAsyncInner(Page page, bool animated)
 		{
 			if (InternalChildren.Contains(page))
+			{
+			{
 				return;
+			}
 
 			var previousPage = CurrentPage;
 			SendNavigating();
@@ -197,7 +591,9 @@ namespace Microsoft.Maui.Controls
 				requestPush(this, args);
 
 				if (args.Task != null)
+				{
 					await args.Task;
+				}
 			}
 
 			SendNavigated(previousPage);
@@ -212,7 +608,10 @@ namespace Microsoft.Maui.Controls
 		internal void SendNavigatedFromHandler(Page previousPage)
 		{
 			if (CurrentPage.HasNavigatedTo)
+			{
+			{
 				return;
+			}
 
 			SendNavigated(previousPage);
 		}
@@ -223,7 +622,12 @@ namespace Microsoft.Maui.Controls
 			InternalChildren.Add(page);
 
 			if (InternalChildren.Count == 1)
+			{
 				RootPage = page;
+			}
+
+			CurrentPage = page;
+			}
 
 			CurrentPage = page;
 		}
@@ -231,6 +635,9 @@ namespace Microsoft.Maui.Controls
 		void RemovePage(Page page)
 		{
 			if (page == null)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
 
 			if (page == CurrentPage && CurrentPage == RootPage)
@@ -248,9 +655,320 @@ namespace Microsoft.Maui.Controls
 
 			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
 			RemoveFromInnerChildren(page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
 
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (page == CurrentPage && CurrentPage == RootPage)
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+			RemoveFromInnerChildren(page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (page == CurrentPage && CurrentPage == RootPage)
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+			RemoveFromInnerChildren(page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (page == CurrentPage && CurrentPage == RootPage)
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+			RemoveFromInnerChildren(page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (page == CurrentPage && CurrentPage == RootPage)
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+			RemoveFromInnerChildren(page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+
+			if (page == CurrentPage && CurrentPage == RootPage)
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+			RemoveFromInnerChildren(page);
+After:
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+*/
+			{
+				throw new ArgumentNullException($"{nameof(page)} cannot be null.");
+			}
+
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			if (RootPage == page)
 				RootPage = (Page)InternalChildren.First();
+After:
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (RootPage == page)
+				RootPage = (Page)InternalChildren.First();
+After:
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (RootPage == page)
+				RootPage = (Page)InternalChildren.First();
+After:
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			if (RootPage == page)
+				RootPage = (Page)InternalChildren.First();
+After:
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			if (RootPage == page)
+				RootPage = (Page)InternalChildren.First();
+After:
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			if (RootPage == page)
+				RootPage = (Page)InternalChildren.First();
+After:
+			if (page == CurrentPage && CurrentPage == RootPage)
+			{
+				throw new InvalidOperationException("Cannot remove root page when it is also the currently displayed page.");
+			}
+
+			if (page == CurrentPage)
+			{
+				Application.Current?.FindMauiContext()?.CreateLogger<NavigationPage>()?.LogWarning("RemovePage called for CurrentPage object. This can result in undesired behavior, consider calling PopAsync instead.");
+				PopAsync();
+				return;
+			}
+
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+*/
+			if (!InternalChildren.Contains(page))
+			{
+				throw new ArgumentException("Page to remove must be contained on this Navigation Page");
+			}
+
+			_removePageRequested?.Invoke(this, new NavigationRequestedEventArgs(page, true));
+			RemoveFromInnerChildren(page);
+
+			if (RootPage == page)
+			{
+				RootPage = (Page)InternalChildren.First();
+			RemoveFromInnerChildren(page);
+
+			if (RootPage == page)
+			{
+				RootPage = (Page)InternalChildren.First();
+			}
+			}
 		}
 
 		class NavigationImpl : NavigationProxy

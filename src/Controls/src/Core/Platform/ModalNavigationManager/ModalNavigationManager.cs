@@ -31,7 +31,10 @@ namespace Microsoft.Maui.Controls.Platform
 				var currentPage = _modalPages.Count > 0 ? _modalPages[_modalPages.Count - 1].Page : _window.Page;
 
 				if (currentPage is Shell shell)
+				{
+				{
 					currentPage = shell.CurrentPage;
+				}
 
 				return currentPage;
 			}
@@ -49,7 +52,9 @@ namespace Microsoft.Maui.Controls.Platform
 			_window.PropertyChanged += (_, args) =>
 			{
 				if (args.Is(Window.PageProperty))
+				{
 					SettingNewPage();
+				}
 			};
 
 			InitializePlatform();
@@ -119,7 +124,10 @@ namespace Microsoft.Maui.Controls.Platform
 		async Task SyncPlatformModalStackAsync()
 		{
 			if (!IsModalReady || syncing)
+			{
+			{
 				return;
+			}
 
 			bool syncAgain = false;
 
@@ -139,7 +147,10 @@ namespace Microsoft.Maui.Controls.Platform
 
 				// This means the modal stacks are already synced so we don't have to do anything
 				if (_platformModalPages.Count == _modalPages.Count && popTo == _platformModalPages.Count)
+				{
+				{
 					return;
+				}
 
 				// This ensures that appearing has fired on the final page that will be visible after 
 				// the sync has finished
@@ -196,7 +207,201 @@ namespace Microsoft.Maui.Controls.Platform
 		public async Task<Page?> PopModalAsync(bool animated)
 		{
 			if (_modalPages.Count <= 0)
+			{
 				throw new InvalidOperationException("PopModalAsync failed because modal stack is currently empty.");
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+After:
+			}
+
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+After:
+			}
+
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+After:
+			}
+
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+After:
+			}
+
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+After:
+			}
+
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+After:
+			}
+
+			Page modal = _modalPages[_modalPages.Count - 1].Page;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+			if (FireLifeCycleEvents)
+After:
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+
+			if (FireLifeCycleEvents)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+			if (FireLifeCycleEvents)
+After:
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+
+			if (FireLifeCycleEvents)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			if (FireLifeCycleEvents)
+After:
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+
+			if (FireLifeCycleEvents)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			if (FireLifeCycleEvents)
+After:
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+
+			if (FireLifeCycleEvents)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			if (FireLifeCycleEvents)
+After:
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+
+			if (FireLifeCycleEvents)
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			if (FireLifeCycleEvents)
+After:
+			if (_window.OnModalPopping(modal))
+			{
+				_window.OnPopCanceled();
+				return null;
+			}
+
+			_modalPages.Remove(modal);
+
+			if (FireLifeCycleEvents)
+*/
+			}
 
 			Page modal = _modalPages[_modalPages.Count - 1].Page;
 
@@ -218,6 +423,47 @@ namespace Microsoft.Maui.Controls.Platform
 			// With shell we want to make sure to only fire the appearing event
 			// on the final page that will be visible after the pop has completed
 			if (_window.Page is Shell shell)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
+				SyncModalStackWhenPlatformIsReady();
+After:
+			{
+				SyncModalStackWhenPlatformIsReady();
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				SyncModalStackWhenPlatformIsReady();
+After:
+			{
+				SyncModalStackWhenPlatformIsReady();
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				SyncModalStackWhenPlatformIsReady();
+After:
+			{
+				SyncModalStackWhenPlatformIsReady();
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				SyncModalStackWhenPlatformIsReady();
+After:
+			{
+				SyncModalStackWhenPlatformIsReady();
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				SyncModalStackWhenPlatformIsReady();
+After:
+			{
+				SyncModalStackWhenPlatformIsReady();
+*/
+			{
 			{
 				if (!shell.CurrentItem.CurrentItem.IsPoppingModalStack)
 				{
@@ -236,6 +482,7 @@ namespace Microsoft.Maui.Controls.Platform
 			await popTask;
 			modal.Parent?.RemoveLogicalChild(modal);
 			_window.OnModalPopped(modal);
+			}
 
 			if (FireLifeCycleEvents)
 			{
@@ -244,7 +491,9 @@ namespace Microsoft.Maui.Controls.Platform
 			}
 
 			if (!isPlatformReady)
+			{
 				SyncModalStackWhenPlatformIsReady();
+			}
 
 			return modal;
 		}
@@ -302,7 +551,11 @@ namespace Microsoft.Maui.Controls.Platform
 			_window.OnModalPushed(modal);
 
 			if (!isPlatformReady)
+			{
+			{
 				SyncModalStackWhenPlatformIsReady();
+			}
+			}
 		}
 
 		void SettingNewPage()
@@ -354,10 +607,15 @@ namespace Microsoft.Maui.Controls.Platform
 		void ClearModalPages(bool xplat = false, bool platform = false)
 		{
 			if (xplat)
+			{
 				_modalPages.Clear();
+			}
 
 			if (platform)
+			{
 				_platformModalPages.Clear();
+			}
+			}
 		}
 
 		// Windows and Android have basically the same requirement that
@@ -438,7 +696,9 @@ namespace Microsoft.Maui.Controls.Platform
 					&& CurrentPlatformPage.IsLoadedOnPlatform();
 
 				if (result)
+				{
 					DisconnectPlatformPageWatchingForLoaded();
+				}
 
 				return result;
 			}

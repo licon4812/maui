@@ -31,7 +31,11 @@ namespace Microsoft.Maui.Hosting.Internal
 		public object? GetService(Type serviceType)
 		{
 			if (!TryGetServiceDescriptors(ref serviceType, out var single, out var enumerable))
+			{
+			{
 				return default;
+			}
+			}
 
 			return GetService(serviceType, single, enumerable);
 		}
@@ -39,14 +43,18 @@ namespace Microsoft.Maui.Hosting.Internal
 		protected ServiceDescriptor? GetServiceDescriptor(Type serviceType)
 		{
 			if (serviceType == null)
+			{
 				throw new ArgumentNullException(nameof(serviceType));
+			}
 
 			var types = GetServiceBaseTypes(serviceType);
 
 			foreach (var type in types)
 			{
 				if (_collection.TryGetService(type, out var descriptor) && descriptor != null)
+				{
 					return descriptor;
+				}
 			}
 
 			return null;
@@ -55,7 +63,9 @@ namespace Microsoft.Maui.Hosting.Internal
 		protected IEnumerable<ServiceDescriptor> GetServiceDescriptors(Type serviceType)
 		{
 			if (serviceType == null)
+			{
 				throw new ArgumentNullException(nameof(serviceType));
+			}
 
 			var types = GetServiceBaseTypes(serviceType);
 
@@ -64,7 +74,9 @@ namespace Microsoft.Maui.Hosting.Internal
 				foreach (var descriptor in _collection)
 				{
 					if (descriptor.ServiceType == serviceType)
+					{
 						yield return descriptor;
+					}
 				}
 			}
 		}
@@ -113,7 +125,10 @@ namespace Microsoft.Maui.Hosting.Internal
 			foreach (var interfac in serviceType.GetInterfaces())
 			{
 				if (typeof(IView).IsAssignableFrom(interfac))
+				{
 					types.Add(interfac);
+				}
+				}
 			}
 
 			return types;
@@ -124,7 +139,9 @@ namespace Microsoft.Maui.Hosting.Internal
 			if (descriptor!.Lifetime == ServiceLifetime.Singleton)
 			{
 				if (_singletons.TryGetValue(descriptor, out var singletonInstance))
+				{
 					return singletonInstance;
+				}
 			}
 
 			var typeInstance = CreateInstance(descriptor);
@@ -138,6 +155,9 @@ namespace Microsoft.Maui.Hosting.Internal
 		object? GetService(Type serviceType, ServiceDescriptor? single, IEnumerable<ServiceDescriptor>? enumerable)
 		{
 			if (single != null)
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
 				return GetService(single);
 
 			if (enumerable != null)
@@ -151,6 +171,182 @@ namespace Microsoft.Maui.Hosting.Internal
 
 				if (values.Count > 0)
 					return values;
+After:
+			{
+				return GetService(single);
+			}
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+				{
+					return values;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-ios)'
+Before:
+				return GetService(single);
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+					return values;
+After:
+			{
+				return GetService(single);
+			}
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+				{
+					return values;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return GetService(single);
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+					return values;
+After:
+			{
+				return GetService(single);
+			}
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+				{
+					return values;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041)'
+Before:
+				return GetService(single);
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+					return values;
+After:
+			{
+				return GetService(single);
+			}
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+				{
+					return values;
+				}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348)'
+Before:
+				return GetService(single);
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+					return values;
+After:
+			{
+				return GetService(single);
+			}
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+				{
+					return values;
+				}
+*/
+			{
+				return GetService(single);
+			}
+
+			if (enumerable != null)
+			{
+				var values = (IList)Activator.CreateInstance(ListType.MakeGenericType(serviceType))!;
+
+				foreach (var descriptor in enumerable)
+				{
+					values.Add(GetService(descriptor));
+				}
+
+				if (values.Count > 0)
+				{
+					return values;
+				}
 			}
 			return default;
 		}
@@ -163,10 +359,14 @@ namespace Microsoft.Maui.Hosting.Internal
 			}
 
 			if (item.ImplementationInstance != null)
+			{
 				return item.ImplementationInstance;
+			}
 
 			if (item.ImplementationFactory != null)
+			{
 				return item.ImplementationFactory(this);
+			}
 
 			throw new InvalidOperationException($"You need to provide an {nameof(item.ImplementationType)}, an {nameof(item.ImplementationFactory)} or an {nameof(item.ImplementationInstance)}.");
 		}

@@ -100,7 +100,30 @@ namespace Microsoft.Maui.DeviceTests
 #if IOS || MACCATALYST
 			// ToolTips are only available on iOS 15+
 			if (!(OperatingSystem.IsMacCatalystVersionAtLeast(15) || OperatingSystem.IsIOSVersionAtLeast(15)))
+			{
 				return;
+
+/* Unmerged change from project 'Core.DeviceTests(net8.0-maccatalyst)'
+Before:
+#endif
+			var control = (TElement)Activator.CreateInstance(typeof(TElement));
+			control.ToolTip = new ToolTip() { Content = expected };
+
+			var handler = await CreateHandlerAsync(control);
+After:
+			}
+#endif
+			var control = (TElement)Activator.CreateInstance(typeof(TElement));
+			control.ToolTip = new ToolTip() { Content = expected };
+*/
+
+/* Unmerged change from project 'Core.DeviceTests(net8.0-maccatalyst)'
+Before:
+			var platformText = await InvokeOnMainThreadAsync(() =>
+After:
+			var handler = await InvokeOnMainThreadAsync(() =>
+*/
+			}
 #endif
 			var control = (TElement)Activator.CreateInstance(typeof(TElement));
 			control.ToolTip = new ToolTip() { Content = expected };

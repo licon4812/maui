@@ -22,7 +22,9 @@ namespace Microsoft.Maui.Platform
 
 			var imageSource = image.Source;
 			if (imageSource == null)
+			{
 				return null;
+			}
 
 			var events = image as IImageSourcePartEvents;
 
@@ -43,7 +45,9 @@ namespace Microsoft.Maui.Platform
 				{
 					setImage(uiImage);
 					if (destinationContext is WImage imageView)
+					{
 						imageView.UpdateIsAnimationPlaying(image);
+					}
 				}
 
 				events?.LoadingCompleted(applied);

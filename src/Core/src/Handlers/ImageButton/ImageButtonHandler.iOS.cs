@@ -58,12 +58,15 @@ namespace Microsoft.Maui.Handlers
 			public override void SetImageSource(UIImage? platformImage)
 			{
 				if (Handler?.PlatformView is not UIButton button)
+				{
 					return;
+				}
 
 				platformImage = platformImage?.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
 
 				button.SetImage(platformImage, UIControlState.Normal);
 				button.HorizontalAlignment = UIControlContentHorizontalAlignment.Fill;
+				button.VerticalAlignment = UIControlContentVerticalAlignment.Fill;
 				button.VerticalAlignment = UIControlContentVerticalAlignment.Fill;
 			}
 		}

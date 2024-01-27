@@ -62,7 +62,9 @@ namespace Microsoft.Maui.Platform
 			set
 			{
 				if (value == _isChecked)
+				{
 					return;
+				}
 
 				_isChecked = value;
 				UpdateDisplay();
@@ -75,9 +77,12 @@ namespace Microsoft.Maui.Platform
 			set
 			{
 				if (value == _isEnabled)
+				{
 					return;
+				}
 
 				_isEnabled = value;
+				UserInteractionEnabled = IsEnabled;
 				UserInteractionEnabled = IsEnabled;
 				UpdateDisplay();
 			}
@@ -89,11 +94,14 @@ namespace Microsoft.Maui.Platform
 			set
 			{
 				if (_tintColor == value)
+				{
 					return;
+				}
 
 				CheckedDisabledAndTinted = null;
 				UncheckedDisabledAndTinted = null;
 				_tintColor = value;
+				CheckBoxTintUIColor = CheckBoxTintColor?.ToPlatform();
 				CheckBoxTintUIColor = CheckBoxTintColor?.ToPlatform();
 			}
 		}
@@ -108,16 +116,23 @@ namespace Microsoft.Maui.Platform
 			set
 			{
 				if (value == _checkBoxTintUIColor)
+				{
 					return;
+				}
 
 				_checkBoxTintUIColor = value;
 				ImageView.TintColor = value;
 				TintColor = value;
 
 				if (Enabled)
+				{
 					SetNeedsDisplay();
+				}
 				else
+				{
 					UpdateDisplay();
+				}
+				}
 			}
 		}
 
@@ -134,7 +149,10 @@ namespace Microsoft.Maui.Platform
 				base.Enabled = value;
 
 				if (changed)
+				{
 					UpdateDisplay();
+				}
+				}
 			}
 		}
 
@@ -255,11 +273,15 @@ namespace Microsoft.Maui.Platform
 		protected override void Dispose(bool disposing)
 		{
 			if (_disposed)
+			{
 				return;
+			}
 
 			_disposed = true;
 			if (disposing)
+			{
 				TouchUpInside -= OnTouchUpInside;
+			}
 
 			base.Dispose(disposing);
 		}
@@ -278,7 +300,9 @@ namespace Microsoft.Maui.Platform
 				// Accessibility Traits are none if VO is off
 				// So we return None until we detect that it's been turned on
 				if (base.AccessibilityTraits == UIAccessibilityTrait.None)
+				{
 					return UIAccessibilityTrait.None;
+				}
 
 				if (s_switchAccessibilityTraits == null ||
 					s_switchAccessibilityTraits == UIKit.UIAccessibilityTrait.None)

@@ -20,7 +20,10 @@ namespace Microsoft.Maui
 		{
 #if !NETSTANDARD2_0
 			if (target != null && DebuggerHelper.DebuggerIsAttached)
+			{
+			{
 				sourceInfos.AddOrUpdate(target, new SourceInfo(uri, lineNumber, linePosition));
+			}
 #else
 			if (target != null && DebuggerHelper.DebuggerIsAttached)
 			{
@@ -39,10 +42,71 @@ namespace Microsoft.Maui
 		public static void OnChildAdded(IVisualTreeElement parent, IVisualTreeElement child)
 		{
 			if (!DebuggerHelper.DebuggerIsAttached)
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+			{
 				return;
 
+/* Unmerged change from project 'Core(net8.0)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348)'
+Added:
+			}
+*/
+			}
+
 			if (child is null)
+			{
 				return;
+			}
 
 			var index = parent?.GetVisualChildren().IndexOf(child) ?? -1;
 
@@ -52,10 +116,71 @@ namespace Microsoft.Maui
 		public static void OnChildAdded(IVisualTreeElement? parent, IVisualTreeElement child, int newLogicalIndex)
 		{
 			if (!DebuggerHelper.DebuggerIsAttached)
+
+/* Unmerged change from project 'Core(net8.0)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348)'
+Before:
+				return;
+After:
+			{
+				return;
+			}
+*/
+			{
+			{
 				return;
 
+/* Unmerged change from project 'Core(net8.0)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-android)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.19041)'
+Added:
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-windows10.0.20348)'
+Added:
+			}
+*/
+			}
+
 			if (child is null)
+			{
 				return;
+			}
 
 			OnVisualTreeChanged(new VisualTreeChangeEventArgs(parent, child, newLogicalIndex, VisualTreeChangeType.Add));
 		}
@@ -63,7 +188,10 @@ namespace Microsoft.Maui
 		public static void OnChildRemoved(IVisualTreeElement parent, IVisualTreeElement child, int oldLogicalIndex)
 		{
 			if (!DebuggerHelper.DebuggerIsAttached)
+			{
+			{
 				return;
+			}
 
 			OnVisualTreeChanged(new VisualTreeChangeEventArgs(parent, child, oldLogicalIndex, VisualTreeChangeType.Remove));
 		}
@@ -102,7 +230,11 @@ namespace Microsoft.Maui
 		static async Task<byte[]?> ScreenshotResultToArray(IScreenshotResult? result, ScreenshotFormat format, int quality)
 		{
 			if (result is null)
+			{
+			{
 				return null;
+			}
+			}
 
 			using var ms = new MemoryStream();
 			await result.CopyToAsync(ms, format, quality);

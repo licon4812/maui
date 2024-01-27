@@ -145,19 +145,27 @@ namespace Microsoft.Maui.Controls.Xaml
 		public override void Accept(IXamlNodeVisitor visitor, INode parentNode)
 		{
 			if (visitor.VisitingMode == TreeVisitingMode.TopDown && !SkipVisitNode(visitor, parentNode))
+			{
 				visitor.Visit(this, parentNode);
+			}
 
 			if (!SkipChildren(visitor, this, parentNode))
 			{
 				foreach (var node in Properties.Values.ToArray())
+				{
 					node.Accept(visitor, this);
+				}
+
 				foreach (var node in CollectionItems.ToArray())
+				{
 					node.Accept(visitor, this);
+				}
 			}
 
 			if (visitor.VisitingMode == TreeVisitingMode.BottomUp && !SkipVisitNode(visitor, parentNode))
+			{
 				visitor.Visit(this, parentNode);
-
+			}
 		}
 
 		bool IsDataTemplate(INode parentNode)
@@ -165,7 +173,10 @@ namespace Microsoft.Maui.Controls.Xaml
 			if (parentNode is IElementNode parentElement &&
 				parentElement.Properties.TryGetValue(XmlName._CreateContent, out INode createContent) &&
 				createContent == this)
+			{
 				return true;
+			}
+
 			return false;
 		}
 
@@ -184,11 +195,20 @@ namespace Microsoft.Maui.Controls.Xaml
 				IgnorablePrefixes = IgnorablePrefixes
 			};
 			foreach (var kvp in Properties)
+			{
 				clone.Properties.Add(kvp.Key, kvp.Value.Clone());
+			}
+
 			foreach (var p in SkipProperties)
+			{
 				clone.SkipProperties.Add(p);
+			}
+
 			foreach (var p in CollectionItems)
+			{
 				clone.CollectionItems.Add(p.Clone());
+			}
+
 			return clone;
 		}
 	}
@@ -202,18 +222,27 @@ namespace Microsoft.Maui.Controls.Xaml
 		public override void Accept(IXamlNodeVisitor visitor, INode parentNode)
 		{
 			if (visitor.VisitingMode == TreeVisitingMode.TopDown && !SkipVisitNode(visitor, parentNode))
+			{
 				visitor.Visit(this, parentNode);
+			}
 
 			if (!SkipChildren(visitor, this, parentNode))
 			{
 				foreach (var node in Properties.Values.ToList())
+				{
 					node.Accept(visitor, this);
+				}
+
 				foreach (var node in CollectionItems.ToList())
+				{
 					node.Accept(visitor, this);
+				}
 			}
 
 			if (visitor.VisitingMode == TreeVisitingMode.BottomUp && !SkipVisitNode(visitor, parentNode))
+			{
 				visitor.Visit(this, parentNode);
+			}
 		}
 	}
 
@@ -231,18 +260,29 @@ namespace Microsoft.Maui.Controls.Xaml
 		public override void Accept(IXamlNodeVisitor visitor, INode parentNode)
 		{
 			if (visitor.VisitingMode == TreeVisitingMode.TopDown)
+			{
 				visitor.Visit(this, parentNode);
+			}
+
 			foreach (var node in CollectionItems)
+			{
 				node.Accept(visitor, this);
+			}
+
 			if (visitor.VisitingMode == TreeVisitingMode.BottomUp)
+			{
 				visitor.Visit(this, parentNode);
+			}
 		}
 
 		public override INode Clone()
 		{
 			var items = new List<INode>();
 			foreach (var p in CollectionItems)
+			{
 				items.Add(p.Clone());
+			}
+
 			return new ListNode(items, NamespaceResolver, LineNumber, LinePosition)
 			{
 				IgnorablePrefixes = IgnorablePrefixes
@@ -257,7 +297,10 @@ namespace Microsoft.Maui.Controls.Xaml
 			do
 			{
 				if (node.IgnorablePrefixes != null && node.IgnorablePrefixes.Contains(prefix))
+				{
 					return true;
+				}
+
 				node = node.Parent;
 			} while (node != null);
 			return false;

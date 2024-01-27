@@ -32,7 +32,10 @@ namespace Microsoft.Maui.Controls.Compatibility
 			base.OnChildAdded(child);
 
 			if (child is T typedChild)
+			{
+			{
 				OnAdded(typedChild);
+			}
 		}
 
 		protected override void OnChildRemoved(Element child, int oldLogicalIndex)
@@ -40,7 +43,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 			base.OnChildRemoved(child, oldLogicalIndex);
 
 			if (child is T typedChild)
+			{
 				OnRemoved(typedChild);
+			}
 		}
 
 		protected virtual void OnAdded(T view)
@@ -85,7 +90,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 		{
 			//if things were added in base ctor (through implicit styles), the items added aren't properly parented
 			if (InternalChildren.Count > 0)
+			{
 				InternalChildrenOnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, InternalChildren));
+			}
 
 			InternalChildren.CollectionChanged += InternalChildrenOnCollectionChanged;
 		}
@@ -172,7 +179,10 @@ namespace Microsoft.Maui.Controls.Compatibility
 				double diff = Math.Max(0, region.Width - request.Request.Width);
 				double horizontalAlign = horizontalOptions.Alignment.ToDouble();
 				if (isRightToLeft)
+				{
 					horizontalAlign = 1 - horizontalAlign;
+				}
+
 				region.X += (int)(diff * horizontalAlign);
 				region.Width -= diff;
 			}
@@ -198,7 +208,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 		public void LowerChild(View view)
 		{
 			if (!InternalChildren.Contains(view) || InternalChildren.First() == view)
+			{
 				return;
+			}
 
 			InternalChildren.Move(InternalChildren.IndexOf(view), 0);
 			OnChildrenReordered();
@@ -207,7 +219,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 		public void RaiseChild(View view)
 		{
 			if (!InternalChildren.Contains(view) || InternalChildren.Last() == view)
+			{
 				return;
+			}
 
 			InternalChildren.Move(InternalChildren.IndexOf(view), InternalChildren.Count - 1);
 			OnChildrenReordered();
@@ -218,7 +232,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 			_hasDoneLayout = false;
 			InvalidateMeasureInternal(InvalidationTrigger.MeasureChanged);
 			if (!_hasDoneLayout)
+			{
 				ForceLayout();
+			}
 		}
 
 		protected abstract void LayoutChildren(double x, double y, double width, double height);
@@ -261,7 +277,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 			_hasDoneLayout = true;
 
 			if (!ShouldLayoutChildren())
+			{
 				return;
+			}
 
 			var oldBounds = new Rect[LogicalChildrenInternal.Count];
 			for (var index = 0; index < oldBounds.Length; index++)
@@ -293,7 +311,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 			var isHeadless = CompressedLayout.GetIsHeadless(this);
 			var headlessOffset = CompressedLayout.GetHeadlessOffset(this);
 			for (var i = 0; i < LogicalChildrenInternal.Count; i++)
+			{
 				CompressedLayout.SetHeadlessOffset((VisualElement)LogicalChildrenInternal[i], isHeadless ? new Point(headlessOffset.X + Bounds.X, headlessOffset.Y + Bounds.Y) : new Point());
+			}
 
 			_lastLayoutSize = new Size(width, height);
 
@@ -315,7 +335,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 		{
 			bool isRightToLeft = false;
 			if (child.Parent is IFlowDirectionController parent && (isRightToLeft = parent.ApplyEffectiveFlowDirectionToChildContainer && parent.EffectiveFlowDirection.IsRightToLeft()))
+			{
 				region = new Rect(parent.Width - region.Right, region.Y, region.Width, region.Height);
+			}
 
 			if (child is IView fe && fe.Handler != null)
 			{
@@ -335,7 +357,10 @@ namespace Microsoft.Maui.Controls.Compatibility
 					double diff = Math.Max(0, region.Width - request.Request.Width);
 					double horizontalAlign = horizontalOptions.Alignment.ToDouble();
 					if (isRightToLeft)
+					{
 						horizontalAlign = 1 - horizontalAlign;
+					}
+
 					region.X += (int)(diff * horizontalAlign);
 					region.Width -= diff;
 				}
@@ -366,7 +391,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 			for (var index = 0; index < count; index++)
 			{
 				if (LogicalChildrenInternal[index] is VisualElement v && v.IsVisible && (!v.IsPlatformEnabled || !v.IsPlatformStateConsistent))
+				{
 					return;
+				}
 			}
 
 			if (child is View view)
@@ -430,7 +457,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 					object item = e.OldItems[i];
 					var v = item as View;
 					if (v == null)
+					{
 						continue;
+					}
 
 					OnInternalRemoved(v, e.OldStartingIndex + i);
 				}
@@ -443,10 +472,14 @@ namespace Microsoft.Maui.Controls.Compatibility
 					object item = e.NewItems[i];
 					var v = item as View;
 					if (v == null)
+					{
 						continue;
+					}
 
 					if (item == this)
+					{
 						throw new InvalidOperationException("Cannot add self to own child collection.");
+					}
 
 					OnInternalAdded(v);
 				}
@@ -460,7 +493,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 			OnChildAdded(view);
 			if (ShouldInvalidateOnChildAdded(view))
+			{
 				InvalidateLayout();
+			}
 
 			view.MeasureInvalidated += OnChildMeasureInvalidated;
 		}
@@ -471,19 +506,25 @@ namespace Microsoft.Maui.Controls.Compatibility
 
 			OnChildRemoved(view, oldIndex);
 			if (ShouldInvalidateOnChildRemoved(view))
+			{
 				InvalidateLayout();
+			}
 		}
 
 		bool ShouldLayoutChildren()
 		{
 			if (Width <= 0 || Height <= 0 || !LogicalChildrenInternal.Any() || !IsVisible || !IsPlatformStateConsistent || DisableLayout)
+			{
 				return false;
+			}
 
 			foreach (Element element in VisibleDescendants())
 			{
 				var visual = element as VisualElement;
 				if (visual == null || !visual.IsVisible)
+				{
 					continue;
+				}
 
 				if (!visual.IsPlatformEnabled || !visual.IsPlatformStateConsistent)
 				{
@@ -513,7 +554,9 @@ namespace Microsoft.Maui.Controls.Compatibility
 			// The SholdLayoutChildren check will catch impossible sizes (negative widths/heights), not-yet-loaded controls,
 			// and other weirdness that comes from the legacy layouts trying to run layout before the native side is ready. 
 			if (!ShouldLayoutChildren())
+			{
 				return bounds.Size;
+			}
 
 			UpdateChildrenLayout();
 

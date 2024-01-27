@@ -24,7 +24,10 @@ namespace Microsoft.Maui
 				this.CreatePlatformWindow(IPlatformApplication.Current.Application, scene, session, connectionOptions);
 
 				if (Window != null)
+				{
 					GetServiceProvider()?.InvokeLifecycleEvents<iOSLifecycle.OnPlatformWindowCreated>(del => del(Window));
+				}
+				}
 			}
 		}
 
@@ -53,6 +56,9 @@ namespace Microsoft.Maui
 		{
 			var window = Window.GetWindow();
 			if (window is null)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			var persistedState = new PersistedState();
@@ -61,7 +67,33 @@ namespace Microsoft.Maui
 
 			// the user saved nothing, so there is nothing to restore
 			if (persistedState.Count == 0)
+After:
+			{
+*/
+			{
 				return null;
+			}
+
+			var persistedState = new PersistedState();
+
+			window.Backgrounding(persistedState);
+
+			// the user saved nothing, so there is nothing to restore
+			if (persistedState.Count == 0)
+			{
+				return null;
+			}
+			}
+
+			var persistedState = new PersistedState();
+
+			window.Backgrounding(persistedState);
+
+			// the user saved nothing, so there is nothing to restore
+			if (persistedState.Count == 0)
+			{
+				return null;
+			}
 
 			return persistedState.ToUserActivity(window.GetType().FullName!);
 		}

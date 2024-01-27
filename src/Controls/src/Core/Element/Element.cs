@@ -84,7 +84,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (AutomationId != null)
+				{
 					throw new InvalidOperationException($"{nameof(AutomationId)} may only be set one time.");
+				}
 
 				SetValue(AutomationIdProperty, value);
 			}
@@ -124,7 +126,10 @@ namespace Microsoft.Maui.Controls
 			get
 			{
 				if (!_id.HasValue)
+				{
 					_id = Guid.NewGuid();
+				}
+
 				return _id.Value;
 			}
 		}
@@ -138,7 +143,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (_styleId == value)
+				{
 					return;
+				}
 
 				OnPropertyChanging();
 				_styleId = value;
@@ -240,11 +247,71 @@ namespace Microsoft.Maui.Controls
 			}
 
 			if (LogicalChildrenInternalBackingStore is null)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+				return false;
+After:
+			{
+				return false;
+			}
+*/
+			{
+			{
+				return false;
+			}
+			}
 
 			var index = LogicalChildrenInternalBackingStore.IndexOf(element);
 			if (index < 0)
+			{
 				return false;
+			}
 
 			RemoveLogicalChild(element, index);
 
@@ -257,10 +324,14 @@ namespace Microsoft.Maui.Controls
 		public void ClearLogicalChildren()
 		{
 			if (LogicalChildrenInternalBackingStore is null)
+			{
 				return;
+			}
 
 			if (LogicalChildrenInternal == EmptyChildren)
+			{
 				return;
+			}
 
 			// Reverse for-loop, so children can be removed while iterating
 			for (int i = LogicalChildrenInternalBackingStore.Count - 1; i >= 0; i--)
@@ -285,7 +356,9 @@ namespace Microsoft.Maui.Controls
 			set
 			{
 				if (_parentOverride == value)
+				{
 					return;
+				}
 
 				bool emitChange = Parent != value;
 
@@ -294,9 +367,13 @@ namespace Microsoft.Maui.Controls
 					OnPropertyChanging(nameof(Parent));
 
 					if (value != null)
+					{
 						OnParentChangingCore(Parent, value);
+					}
 					else
+					{
 						OnParentChangingCore(Parent, RealParent);
+					}
 				}
 
 				_parentOverride = value;
@@ -334,43 +411,33 @@ namespace Microsoft.Maui.Controls
 		void SetParent(Element value)
 		{
 			if (RealParent == value)
+			{
 				return;
+			}
 
 			OnPropertyChanging(nameof(Parent));
 
 			if (_parentOverride == null)
+			{
 				OnParentChangingCore(Parent, value);
+			}
 
 			if (RealParent != null)
 			{
 				((IElementDefinition)RealParent).RemoveResourcesChangedListener(OnParentResourcesChanged);
 
 				if (value != null && (RealParent is Layout || RealParent is IControlTemplated))
+				{
 					Application.Current?.FindMauiContext()?.CreateLogger<Element>()?.LogWarning($"{this} is already a child of {RealParent}. Remove {this} from {RealParent} before adding to {value}.");
+				}
 			}
 
 			RealParent = value;
 			if (RealParent != null)
 			{
-				OnParentResourcesChanged(RealParent.GetMergedResources());
-				((IElementDefinition)RealParent).AddResourcesChangedListener(OnParentResourcesChanged);
-			}
-
-			object context = value?.BindingContext;
-			if (value != null)
-			{
-				value.SetChildInheritedBindingContext(this, context);
-			}
-			else
-			{
-				SetInheritedBindingContext(this, null);
-			}
-
-			OnParentSet();
-
-			if (_parentOverride == null)
-				OnParentChangedCore();
-
+				OnParentResourcesChanged(
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 			OnPropertyChanged(nameof(Parent));
 		}
 
@@ -405,6 +472,566 @@ namespace Microsoft.Maui.Controls
 					{
 						if (effect != null)
 							AttachEffect(effect);
+After:
+			OnPropertyChanged(OnParentResourcesChanged);
+			}
+
+			object context = value?.BindingContext;
+			if (value != null)
+			{
+				value.SetChildInheritedBindingContext(this, context);
+			}
+			else
+			{
+				SetInheritedBindingContext(this, null);
+			}
+
+			OnParentSet();
+
+			if (_parentOverride == null)
+			{
+				OnParentChangedCore();
+			}
+
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+			{
+				return;
+			}
+
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+				{
+					return;
+				}
+
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+						{
+							AttachEffect(effect);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+				return;
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+					return;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+						effect?.SendDetached();
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+							AttachEffect(effect);
+After:
+			OnPropertyChanged(OnParentResourcesChanged);
+			}
+
+			object context = value?.BindingContext;
+			if (value != null)
+			{
+				value.SetChildInheritedBindingContext(this, context);
+			}
+			else
+			{
+				SetInheritedBindingContext(this, null);
+			}
+
+			OnParentSet();
+
+			if (_parentOverride == null)
+			{
+				OnParentChangedCore();
+			}
+
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+			{
+				return;
+			}
+
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+				{
+					return;
+				}
+
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+						{
+							AttachEffect(effect);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+				return;
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+					return;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+						effect?.SendDetached();
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+							AttachEffect(effect);
+After:
+			OnPropertyChanged(OnParentResourcesChanged);
+			}
+
+			object context = value?.BindingContext;
+			if (value != null)
+			{
+				value.SetChildInheritedBindingContext(this, context);
+			}
+			else
+			{
+				SetInheritedBindingContext(this, null);
+			}
+
+			OnParentSet();
+
+			if (_parentOverride == null)
+			{
+				OnParentChangedCore();
+			}
+
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+			{
+				return;
+			}
+
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+				{
+					return;
+				}
+
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+						{
+							AttachEffect(effect);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+				return;
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+					return;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+						effect?.SendDetached();
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+							AttachEffect(effect);
+After:
+			OnPropertyChanged(OnParentResourcesChanged);
+			}
+
+			object context = value?.BindingContext;
+			if (value != null)
+			{
+				value.SetChildInheritedBindingContext(this, context);
+			}
+			else
+			{
+				SetInheritedBindingContext(this, null);
+			}
+
+			OnParentSet();
+
+			if (_parentOverride == null)
+			{
+				OnParentChangedCore();
+			}
+
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+			{
+				return;
+			}
+
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+				{
+					return;
+				}
+
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+						{
+							AttachEffect(effect);
+						}
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+				return;
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+					return;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+						effect?.SendDetached();
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+							AttachEffect(effect);
+After:
+			OnPropertyChanged(OnParentResourcesChanged);
+			}
+
+			object context = value?.BindingContext;
+			if (value != null)
+			{
+				value.SetChildInheritedBindingContext(this, context);
+			}
+			else
+			{
+				SetInheritedBindingContext(this, null);
+			}
+
+			OnParentSet();
+
+			if (_parentOverride == null)
+			{
+				OnParentChangedCore();
+			}
+
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+			{
+				return;
+			}
+
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+				{
+					return;
+				}
+
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+						{
+							AttachEffect(effect);
+						}
+*/
+RealParent.GetMergedResources());
+				((IElementDefinition)RealParent).AddResourcesChangedListener(OnParentResourcesChanged);
+			}
+
+			object context = value?.BindingContext;
+			if (value != null)
+			{
+				value.SetChildInheritedBindingContext(this, context);
+			}
+			else
+			{
+				SetInheritedBindingContext(this, null);
+			}
+
+			OnParentSet();
+
+			if (_parentOverride == null)
+			{
+				OnParentChangedCore();
+			}
+
+			OnPropertyChanged(nameof(Parent));
+		}
+
+		internal bool IsTemplateRoot { get; set; }
+
+		/// <inheritdoc/>
+		void IElementDefinition.RemoveResourcesChangedListener(Action<object, ResourcesChangedEventArgs> onchanged)
+		{
+			if (_changeHandlers == null)
+			{
+				return;
+			}
+
+			_changeHandlers.Remove(onchanged);
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public IEffectControlProvider EffectControlProvider
+		{
+			get { return _effectControlProvider; }
+			set
+			{
+				if (_effectControlProvider == value)
+				{
+					return;
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+						effect?.SendDetached();
+				}
+				_effectControlProvider = value;
+After:
+				}
+*/
+				}
+
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+				{
+					foreach (Effect effect in _effects)
+					{
+						effect?.SendDetached();
+					}
+				}
+				_effectControlProvider = value;
+				if (_effectControlProvider != null && _effects != null)
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+							AttachEffect(effect);
 					}
 				}
 			}
@@ -412,6 +1039,46 @@ namespace Microsoft.Maui.Controls
 
 		/// <summary>For internal use by .NET MAUI.</summary>
 		void IElementController.SetValueFromRenderer(BindableProperty property, object value) => SetValueFromRenderer(property, value);
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public void SetValueFromRenderer(BindableProperty property, object value)
+		{
+			SetValue(property, value, specificity: SetterSpecificity.FromHandler);
+		}
+After:
+				{
+					foreach (Effect effect in _effects)
+					{
+						if (effect != null)
+						{
+							AttachEffect(effect);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		void IElementController.SetValueFromRenderer(BindableProperty property, object value) => SetValueFromRenderer(property, value);
+*/
+						{
+							AttachEffect(effect);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		void IElementController.SetValueFromRenderer(BindableProperty property, object value) => SetValueFromRenderer(property, value);
+
+		/// <summary>For internal use by .NET MAUI.</summary>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public void SetValueFromRenderer(BindableProperty property, object value)
+		{
+			SetValue(property, value, specificity: SetterSpecificity.FromHandler);
+		}
 
 		/// <summary>For internal use by .NET MAUI.</summary>
 		[EditorBrowsable(EditorBrowsableState.Never)]
@@ -434,7 +1101,9 @@ namespace Microsoft.Maui.Controls
 			foreach (var effect in Effects)
 			{
 				if (effect.ResolveId == name)
+				{
 					return true;
+				}
 			}
 			return false;
 		}
@@ -447,7 +1116,10 @@ namespace Microsoft.Maui.Controls
 		{
 			var namescope = GetNameScope();
 			if (namescope == null)
+			{
 				throw new InvalidOperationException("this element is not in a namescope");
+			}
+
 			return namescope.FindByName(name);
 		}
 
@@ -509,10 +1181,12 @@ namespace Microsoft.Maui.Controls
 			});
 
 			if (_bindableResources != null)
+			{
 				foreach (BindableObject item in _bindableResources)
 				{
 					SetInheritedBindingContext(item, BindingContext);
 				}
+			}
 
 			base.OnBindingContextChanged();
 		}
@@ -532,7 +1206,9 @@ namespace Microsoft.Maui.Controls
 
 			OnDescendantAdded(child);
 			foreach (Element element in child.Descendants())
+			{
 				OnDescendantAdded(element);
+			}
 		}
 
 		/// <summary> Raises the <see cref="ChildRemoved"/> event. Implement this method to add class handling for this event </summary>
@@ -552,7 +1228,9 @@ namespace Microsoft.Maui.Controls
 
 			OnDescendantRemoved(child);
 			foreach (Element element in child.Descendants())
+			{
 				OnDescendantRemoved(element);
+			}
 		}
 
 		/// <summary>Raises the (internal) <c>ParentSet</c> event. Implement this method in order to add behavior when the element is added to a parent.</summary>
@@ -602,7 +1280,9 @@ namespace Microsoft.Maui.Controls
 				{
 					Element child = children[i];
 					if (child is not TElement childT)
+					{
 						continue;
+					}
 
 					yield return childT;
 					queue.Enqueue(child);
@@ -613,9 +1293,13 @@ namespace Microsoft.Maui.Controls
 		internal virtual void OnParentResourcesChanged(object sender, ResourcesChangedEventArgs e)
 		{
 			if (e == ResourcesChangedEventArgs.StyleSheets)
+			{
 				ApplyStyleSheets();
+			}
 			else
+			{
 				OnParentResourcesChanged(e.Values);
+			}
 		}
 
 		internal virtual void OnParentResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
@@ -628,29 +1312,50 @@ namespace Microsoft.Maui.Controls
 			DynamicResources.Remove(property);
 
 			if (DynamicResources.Count == 0)
+			{
 				_dynamicResources = null;
+			}
+
 			base.OnRemoveDynamicResource(property);
 		}
 
 		internal virtual void OnResourcesChanged(object sender, ResourcesChangedEventArgs e)
 		{
 			if (e == ResourcesChangedEventArgs.StyleSheets)
+			{
 				ApplyStyleSheets();
+			}
 			else
+			{
 				OnResourcesChanged(e.Values);
+			}
 		}
 
 		internal void OnResourcesChanged(IEnumerable<KeyValuePair<string, object>> values)
 		{
 			if (values == null)
+			{
 				return;
+			}
+
 			if (_changeHandlers != null)
+			{
 				foreach (Action<object, ResourcesChangedEventArgs> handler in _changeHandlers)
+				{
 					handler(this, new ResourcesChangedEventArgs(values));
+				}
+			}
+
 			if (_dynamicResources == null)
+			{
 				return;
+			}
+
 			if (_bindableResources == null)
+			{
 				_bindableResources = new List<BindableObject>();
+			}
+
 			foreach (KeyValuePair<string, object> value in values)
 			{
 				List<(BindableProperty, SetterSpecificity)> changedResources = null;
@@ -661,20 +1366,119 @@ namespace Microsoft.Maui.Controls
 					// The .Value.Item1 is the name of DynamicResouce to which the BindableProperty is bound.
 					// The .Key is the name of the DynamicResource whose value is changing.
 					if (dynR.Value.Item1 != value.Key)
+
+/* Unmerged change from project 'Controls.Core(net8.0)'
+Before:
 						continue;
 					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
 					changedResources.Add((dynR.Key, dynR.Value.Item2));
 				}
 				if (changedResources == null)
 					continue;
+After:
+					{
+						continue;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-ios)'
+Before:
+						continue;
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+					continue;
+After:
+					{
+						continue;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
+						continue;
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+					continue;
+After:
+					{
+						continue;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-android)'
+Before:
+						continue;
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+					continue;
+After:
+					{
+						continue;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.19041)'
+Before:
+						continue;
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+					continue;
+After:
+					{
+						continue;
+*/
+
+/* Unmerged change from project 'Controls.Core(net8.0-windows10.0.20348)'
+Before:
+						continue;
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+					continue;
+After:
+					{
+						continue;
+*/
+					{
+						continue;
+					}
+
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+				{
+					continue;
+				}
+
+					}
+
+					changedResources = changedResources ?? new List<(BindableProperty, SetterSpecificity)>();
+					changedResources.Add((dynR.Key, dynR.Value.Item2));
+				}
+				if (changedResources == null)
+				{
+					continue;
+				}
+
 				foreach ((BindableProperty, SetterSpecificity) changedResource in changedResources)
+				{
 					OnResourceChanged(changedResource.Item1, value.Value, changedResource.Item2);
+				}
 
 				var bindableObject = value.Value as BindableObject;
 				if (bindableObject != null && (bindableObject as Element)?.Parent == null)
 				{
 					if (!_bindableResources.Contains(bindableObject))
+					{
 						_bindableResources.Add(bindableObject);
+					}
+
 					SetInheritedBindingContext(bindableObject, BindingContext);
 				}
 			}
@@ -685,7 +1489,9 @@ namespace Microsoft.Maui.Controls
 			base.OnSetDynamicResource(property, key, specificity);
 			DynamicResources[property] = (key, specificity);
 			if (this.TryGetResource(key, out var value))
+			{
 				OnResourceChanged(property, value, specificity);
+			}
 		}
 
 		internal event EventHandler ParentSet;
@@ -707,7 +1513,10 @@ namespace Microsoft.Maui.Controls
 				{
 					var child = children[i] as VisualElement;
 					if (child == null || !child.IsVisible)
+					{
 						continue;
+					}
+
 					yield return child;
 					queue.Enqueue(child);
 				}
@@ -717,13 +1526,20 @@ namespace Microsoft.Maui.Controls
 		void AttachEffect(Effect effect)
 		{
 			if (_effectControlProvider == null)
+			{
 				return;
+			}
+
 			if (effect.IsAttached)
+			{
 				throw new InvalidOperationException("Cannot attach Effect to multiple sources");
+			}
 
 			Effect effectToRegister = effect;
 			if (effect is RoutingEffect re && re.Inner != null)
+			{
 				effectToRegister = re.Inner;
+			}
 
 			_effectControlProvider.RegisterEffect(effectToRegister);
 			effectToRegister.Element = this;
@@ -794,7 +1610,9 @@ namespace Microsoft.Maui.Controls
 			{
 				var ns = NameScope.GetNameScope(element);
 				if (ns != null)
+				{
 					return ns;
+				}
 			} while ((element = element.RealParent) != null);
 			return null;
 		}
@@ -838,7 +1656,9 @@ namespace Microsoft.Maui.Controls
 		private protected virtual void OnParentChangingCore(Element oldParent, Element newParent)
 		{
 			if (oldParent == newParent)
+			{
 				return;
+			}
 
 			var args = new ParentChangingEventArgs(oldParent, newParent);
 			ParentChanging?.Invoke(this, args);
@@ -896,14 +1716,18 @@ namespace Microsoft.Maui.Controls
 		void SetHandler(IElementHandler newHandler)
 		{
 			if (newHandler == _handler)
+			{
 				return;
+			}
 
 			try
 			{
 				// If a handler is getting changed before the end of this method
 				// Something is wired up incorrectly
 				if (_previousHandler != null)
+				{
 					throw new InvalidOperationException("Handler is already being set elsewhere");
+				}
 
 				_previousHandler = _handler;
 
@@ -915,10 +1739,14 @@ namespace Microsoft.Maui.Controls
 				// If a handler is being reused for a different VirtualView then the virtual
 				// view would have already rolled 
 				if (_previousHandler?.VirtualView == this)
+				{
 					_previousHandler?.DisconnectHandler();
+				}
 
 				if (_handler?.VirtualView != this)
+				{
 					_handler?.SetVirtualView(this);
+				}
 
 				OnHandlerChangedCore();
 			}

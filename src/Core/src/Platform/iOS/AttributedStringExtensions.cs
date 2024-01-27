@@ -10,13 +10,38 @@ namespace Microsoft.Maui.Platform
 		public static NSMutableAttributedString? WithCharacterSpacing(this NSAttributedString attributedString, double characterSpacing)
 		{
 			if (attributedString == null || attributedString.Length == 0)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			var attribute = attributedString.GetAttribute(UIStringAttributeKey.KerningAdjustment, 0, out _);
 
 			// if we are going to un-set, but there is no adjustment, then bail out
 			if (characterSpacing == 0 && attribute == null)
+After:
+			{
+*/
+			{
 				return null;
+			}
+
+			var attribute = attributedString.GetAttribute(UIStringAttributeKey.KerningAdjustment, 0, out _);
+
+			// if we are going to un-set, but there is no adjustment, then bail out
+			if (characterSpacing == 0 && attribute == null)
+			{
+				return null;
+			}
+			}
+
+			var attribute = attributedString.GetAttribute(UIStringAttributeKey.KerningAdjustment, 0, out _);
+
+			// if we are going to un-set, but there is no adjustment, then bail out
+			if (characterSpacing == 0 && attribute == null)
+			{
+				return null;
+			}
 
 			var mutableAttributedString = new NSMutableAttributedString(attributedString);
 			mutableAttributedString.AddAttribute
@@ -31,7 +56,11 @@ namespace Microsoft.Maui.Platform
 		internal static NSMutableAttributedString? WithTextColor(this NSAttributedString attributedString, Graphics.Color color)
 		{
 			if (attributedString == null || attributedString.Length == 0)
+			{
+			{
 				return null;
+			}
+			}
 
 			var mutableAttributedString = new NSMutableAttributedString(attributedString);
 			mutableAttributedString.AddAttribute
@@ -47,17 +76,57 @@ namespace Microsoft.Maui.Platform
 		public static NSMutableAttributedString? WithLineHeight(this NSAttributedString attributedString, double lineHeight)
 		{
 			if (attributedString == null || attributedString.Length == 0)
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
 				return null;
 
 			var attribute = (NSParagraphStyle)attributedString.GetAttribute(UIStringAttributeKey.ParagraphStyle, 0, out _);
 
 			// if we need to un-set the line height but there is no attribute to modify then we do nothing
 			if (lineHeight == -1 && attribute == null)
+After:
+			{
+*/
+			{
 				return null;
+			}
+
+			var attribute = (NSParagraphStyle)attributedString.GetAttribute(UIStringAttributeKey.ParagraphStyle, 0, out _);
+
+			// if we need to un-set the line height but there is no attribute to modify then we do nothing
+			if (lineHeight == -1 && attribute == null)
+			
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Added:
+			}
+
+			var attribute = (NSParagraphStyle)attributedString.GetAttribute(UIStringAttributeKey.ParagraphStyle, 0, out _);
+
+			// if we need to un-set the line height but there is no attribute to modify then we do nothing
+			if (lineHeight == -1 && attribute == null)
+			{
+				return null;
+			}
+*/
+
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+				mutableParagraphStyle.SetParagraphStyle(attribute);
+After:
+			{
+				mutableParagraphStyle.SetParagraphStyle(attribute);
+			}
+*/
+{
+				return null;
+			}
 
 			var mutableParagraphStyle = new NSMutableParagraphStyle();
 			if (attribute != null)
+			{
 				mutableParagraphStyle.SetParagraphStyle(attribute);
+			}
 
 			mutableParagraphStyle.LineHeightMultiple = new nfloat(lineHeight >= 0 ? lineHeight : -1);
 
@@ -75,7 +144,11 @@ namespace Microsoft.Maui.Platform
 		public static NSMutableAttributedString? WithDecorations(this NSAttributedString attributedString, TextDecorations decorations)
 		{
 			if (attributedString == null || attributedString.Length == 0)
+			{
+			{
 				return null;
+			}
+			}
 
 			var mutable = new NSMutableAttributedString(attributedString);
 

@@ -23,7 +23,9 @@ namespace Microsoft.Maui
 				if (font.ResourceStream == null)
 				{
 					if (!System.IO.File.Exists(font.FontName))
+					{
 						throw new InvalidOperationException("ResourceStream was null.");
+					}
 
 					var provider = new CGDataProvider(font.FontName);
 					cgFont = CGFont.CreateFromProvider(provider);
@@ -32,22 +34,44 @@ namespace Microsoft.Maui
 				{
 					var data = NSData.FromStream(font.ResourceStream);
 					if (data == null)
+					{
 						throw new InvalidOperationException("Unable to load font stream data.");
+					}
+
 					var provider = new CGDataProvider(data);
 					cgFont = CGFont.CreateFromProvider(provider);
 				}
 
 				if (cgFont == null)
+				{
 					throw new InvalidOperationException("Unable to load font from the stream.");
+				}
 
 				var name = cgFont.PostScriptName;
 
+/* Unmerged change from project 'Core(net8.0-maccatalyst)'
+Before:
+				if (uiFont != null)
+After:
 				if (CTFontManager.RegisterGraphicsFont(cgFont, out var error))
+				{
 					return name;
+				}
 
 				var uiFont = UIFont.FromName(name, 10);
 				if (uiFont != null)
+*/
+
+				if (CTFontManager.RegisterGraphicsFont(cgFont, out var error))
+				{
 					return name;
+				}
+
+				var uiFont = UIFont.FromName(name, 10);
+				if (uiFont != null)
+				{
+					return name;
+				}
 
 				throw new NSErrorException(error);
 			}

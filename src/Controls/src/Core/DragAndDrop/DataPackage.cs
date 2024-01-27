@@ -31,10 +31,15 @@ namespace Microsoft.Maui.Controls
 			};
 
 			foreach (var property in Properties)
+			{
 				dataPackage.Properties.Add(property.Key, property.Value);
+			}
 
 			foreach (var property in PropertiesInternal)
+			{
+			{
 				dataPackage.PropertiesInternal.Add(property.Key, property.Value);
+			}
 
 			return dataPackage;
 		}

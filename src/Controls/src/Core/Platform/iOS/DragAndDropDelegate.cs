@@ -91,7 +91,9 @@ namespace Microsoft.Maui.Controls.Platform
 			UIDropOperation operation = UIDropOperation.Cancel;
 
 			if (session.LocalDragSession == null)
+			{
 				return new UIDropProposal(operation);
+			}
 
 			DataPackage package = null;
 
@@ -106,7 +108,32 @@ namespace Microsoft.Maui.Controls.Platform
 			if (HandleDragOver((View)_viewHandler.VirtualView, package, session.LocalDragSession, platformArgs))
 			{
 				if (platformArgs.DropProposal is not null)
+				{
 					return platformArgs.DropProposal;
+				}
+
+				operation = UIDropOperation.Copy;
+			}
+
+			return new UIDropProposal(operation);
+			}
+
+			DataPackage package = null;
+
+			if (session.LocalDragSession.Items.Length > 0 &&
+				session.LocalDragSession.Items[0].LocalObject is CustomLocalStateData cdi)
+			{
+				package = cdi.DataPackage;
+			}
+
+			var platformArgs = new PlatformDragEventArgs(_viewHandler.PlatformView, interaction, session);
+
+			if (HandleDragOver((View)_viewHandler.VirtualView, package, session.LocalDragSession, platformArgs))
+			{
+				if (platformArgs.DropProposal is not null)
+				{
+					return platformArgs.DropProposal;
+				}
 
 				operation = UIDropOperation.Copy;
 			}
@@ -140,12 +167,16 @@ namespace Microsoft.Maui.Controls.Platform
 				view.GestureRecognizers;
 
 			if (gestures == null)
+			{
 				return;
+			}
 
 			foreach (var gesture in gestures)
 			{
 				if (gesture is TRecognizer recognizer)
+				{
 					func(recognizer);
+				}
 			}
 		}
 
@@ -158,7 +189,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DragGestureRecognizer>(rec =>
 			{
 				if (!rec.CanDrag)
+				{
 					return;
+				}
 
 				var viewHandlerRef = new WeakReference(handler);
 				var sessionRef = new WeakReference(session);
@@ -166,7 +199,9 @@ namespace Microsoft.Maui.Controls.Platform
 				var args = rec.SendDragStarting(element, (relativeTo) => CalculatePosition(relativeTo, viewHandlerRef, sessionRef), platformArgs);
 
 				if (args.Cancel)
+				{
 					return;
+				}
 
 #pragma warning disable CS0618 // Type or member is obsolete
 				if (!args.Handled)
@@ -179,7 +214,9 @@ namespace Microsoft.Maui.Controls.Platform
 						foreach (var item in dragItems)
 						{
 							if (item.LocalObject is null)
+							{
 								SetLocalObject(item, handler, args.Data);
+							}
 						}
 						returnValue = dragItems;
 						return;
@@ -190,6 +227,9 @@ namespace Microsoft.Maui.Controls.Platform
 					NSItemProvider itemProvider = null;
 
 					if (handler.PlatformView is UIImageView iv)
+
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 						uIImage = iv.Image;
 
 					if (handler.PlatformView is UIButton b && b.ImageView != null)
@@ -204,7 +244,19 @@ namespace Microsoft.Maui.Controls.Platform
 
 						if (args.Data.Image == null && handler.VirtualView is IImageElement imageElement)
 							args.Data.Image = imageElement.Source;
+After:
+					{
+						uIImage = iv.Image;
+*/
+					{
+						uIImage = iv.Image;
 					}
+
+					if (handler.PlatformView is UIButton b && b.ImageView != null)
+					{
+						
+/* Unmerged change from project 'Controls.Core(net8.0-maccatalyst)'
+Before:
 					else
 					{
 						string text = args.Data.Text ?? clipDescription;
@@ -225,6 +277,98 @@ namespace Microsoft.Maui.Controls.Platform
 
 					if (args.PlatformArgs.PreviewProvider is not null)
 						dragItem.PreviewProvider = args.PlatformArgs.PreviewProvider;
+
+					returnValue = new UIDragItem[] { dragItem };
+				}
+After:
+					if (handler.PlatformView is UIButton b && b.PlatformArgs.PreviewProvider is not null)
+					{
+						uIImage = b.ImageView.Image;
+					}
+
+					if (uIImage != null)
+					{
+						if (uIImage != null)
+						{
+							itemProvider = new NSItemProvider(uIImage);
+						}
+						else
+						{
+							itemProvider = new NSItemProvider(new NSString(""));
+						}
+
+						if (args.Data.Image == null && handler.VirtualView is IImageElement imageElement)
+						{
+							args.Data.Image = imageElement.Source;
+						}
+					}
+					else
+					{
+						string text = args.Data.Text ?? clipDescription;
+
+						if (String.IsNullOrWhiteSpace(text))
+						{
+							itemProvider = new NSItemProvider(handler.PlatformView.ConvertToImage());
+						}
+						else
+						{
+							itemProvider = new NSItemProvider(new NSString(text));
+						}
+					}
+
+					var dragItem = new UIDragItem(args.PlatformArgs.ItemProvider ?? itemProvider);
+
+					SetLocalObject(dragItem, handler, args.Data);
+
+					if (args.PlatformArgs.PreviewProvider is not null)
+					{
+						dragItem.PreviewProvider = args.PlatformArgs.PreviewProvider;
+					}
+
+					returnValue = new UIDragItem[] { dragItem };
+				}
+*/
+uIImage = b.ImageView.Image;
+					}
+
+					if (uIImage != null)
+					{
+						if (uIImage != null)
+						{
+							itemProvider = new NSItemProvider(uIImage);
+						}
+						else
+						{
+							itemProvider = new NSItemProvider(new NSString(""));
+						}
+
+						if (args.Data.Image == null && handler.VirtualView is IImageElement imageElement)
+						{
+							args.Data.Image = imageElement.Source;
+						}
+					}
+					else
+					{
+						string text = args.Data.Text ?? clipDescription;
+
+						if (String.IsNullOrWhiteSpace(text))
+						{
+							itemProvider = new NSItemProvider(handler.PlatformView.ConvertToImage());
+						}
+						else
+						{
+							itemProvider = new NSItemProvider(new NSString(text));
+						}
+					}
+
+					var dragItem = new UIDragItem(args.PlatformArgs.ItemProvider ?? itemProvider);
+
+					SetLocalObject(dragItem, handler, args.Data);
+
+					if (args.ImageView != null)
+					{
+						dragItem.PreviewProvider = args.PlatformArgs.PreviewProvider;
+					}
 
 					returnValue = new UIDragItem[] { dragItem };
 				}
@@ -261,7 +405,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DropGestureRecognizer>(rec =>
 			{
 				if (!rec.AllowDrop)
+				{
 					return;
+				}
 
 				rec.SendDragLeave(dragEventArgs);
 				validTarget = validTarget || dragEventArgs.AcceptedOperation != DataPackageOperation.None;
@@ -281,7 +427,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DropGestureRecognizer>(rec =>
 			{
 				if (!rec.AllowDrop)
+				{
 					return;
+				}
 
 				rec.SendDragOver(dragEventArgs);
 				validTarget = validTarget || dragEventArgs.AcceptedOperation != DataPackageOperation.None;
@@ -299,7 +447,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DropGestureRecognizer>(async rec =>
 			{
 				if (!rec.AllowDrop)
+				{
 					return;
+				}
 
 				try
 				{
@@ -315,7 +465,9 @@ namespace Microsoft.Maui.Controls.Platform
 		static internal Point? CalculatePosition(IElement relativeTo, WeakReference viewHandlerRef, WeakReference sessionRef)
 		{
 			if (sessionRef is null)
+			{
 				return null;
+			}
 
 			var viewHandler = viewHandlerRef.Target as IPlatformViewHandler;
 			var session = sessionRef.Target as IUIDragDropSession;
@@ -327,7 +479,9 @@ namespace Microsoft.Maui.Controls.Platform
 			CGPoint dragLocation;
 
 			if (virtualView is null)
+			{
 				return null;
+			}
 
 			// If relativeTo is null we get the location on the screen
 			if (relativeTo is null)
@@ -336,7 +490,9 @@ namespace Microsoft.Maui.Controls.Platform
 				dragLocation = session.LocationInView(platformView);
 
 				if (!screenLocation.HasValue)
+				{
 					return null;
+				}
 
 				double x = dragLocation.X + screenLocation.Value.X;
 				double y = dragLocation.Y + screenLocation.Value.Y;
