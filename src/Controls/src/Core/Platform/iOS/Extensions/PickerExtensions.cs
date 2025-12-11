@@ -11,14 +11,47 @@ public static class PickerExtensions
 {
 	public static void CreateBorder(this MauiPicker platformView, Picker picker)
 	{
-		// Remove any existing custom border layer
-		const string borderLayerName = "MauiPickerBorderLayer";
+		// If all sides are equal, use the native uniform border support
+		var t = picker.BorderThickness;
+		var uniform = t.Left == t.Top && t.Top == t.Right && t.Right == t.Bottom;
+
+		if (uniform)
+		{
+			// Clear any custom layers we may have added previously
+			const string borderLayerNamePrefix = "MauiPickerBorderLayer_";
+			if (platformView.Layer.Sublayers is { Length: > 0 } sublayersUniform)
+			{
+				for (int i = sublayersUniform.Length - 1; i >= 0; i--)
+				{
+					if (sublayersUniform[i].Name != null && sublayersUniform[i].Name!
+						    .StartsWith(borderLayerNamePrefix, StringComparison.Ordinal))
+					{
+						sublayersUniform[i].RemoveFromSuperLayer();
+					}
+				}
+			}
+
+			if (t.Left <= 0)
+			{
+				platformView.Layer.BorderWidth = 0;
+				return;
+			}
+
+			platformView.Layer.BorderColor = picker.BorderColor.ToCGColor();
+			platformView.Layer.BorderWidth = (nfloat)t.Left;
+			return;
+		}
+
+		// Non-uniform thickness: custom per-side drawing via CAShapeLayer(s)
+		const string borderLayerName = "MauiPickerBorderLayer_Custom";
 		if (platformView.Layer.Sublayers is { Length: > 0 } sublayers)
 		{
 			for (int i = sublayers.Length - 1; i >= 0; i--)
 			{
 				if (sublayers[i].Name == borderLayerName)
-				{ sublayers[i].RemoveFromSuperLayer(); }
+				{
+					sublayers[i].RemoveFromSuperLayer();
+				}
 			}
 		}
 
@@ -27,6 +60,7 @@ public static class PickerExtensions
 
 		if (!hasAnyBorder)
 		{
+			platformView.Layer.BorderWidth = 0;
 			return;
 		}
 
@@ -37,10 +71,9 @@ public static class PickerExtensions
 			return;
 		}
 
-		var path = new UIBezierPath();
+		var color = picker.BorderColor.ToCGColor();
 
-		// Draw per-side lines; using separate strokes keeps behavior consistent even though
-		// CAShapeLayer.LineWidth is uniform. If needed, this can be expanded to one CAShapeLayer per side.
+		var path = new UIBezierPath();
 
 		// Top
 		if (thickness.Top > 0)
@@ -80,10 +113,12 @@ public static class PickerExtensions
 			Frame = bounds,
 			Path = path.CGPath,
 			FillColor = UIColor.Clear.CGColor,
-			StrokeColor = picker.BorderColor.ToCGColor(),
-			LineWidth = 1, // Actual visual thickness is controlled by positioning lines using the Thickness values
+			StrokeColor = color,
+			LineWidth = 1,
 		};
 
+		// Ensure the native border does not interfere when using custom drawing
+		platformView.Layer.BorderWidth = 0;
 		platformView.Layer.AddSublayer(borderLayer);
 	}
 }
