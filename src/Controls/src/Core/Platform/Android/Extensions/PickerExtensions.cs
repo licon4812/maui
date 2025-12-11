@@ -12,7 +12,7 @@ namespace Microsoft.Maui.Controls.Platform
 		public static void CreateBorder(this AView platformView, Picker picker)
 		{
 			Color? color = null;
-			color = picker.BorderColor != null ? picker.BorderColor.ToPlatform() : Colors.Transparent.ToPlatform();
+			color = picker.BorderColor?.ToPlatform() ?? Colors.Transparent.ToPlatform();
 
 			var thickness = picker.BorderThickness;
 

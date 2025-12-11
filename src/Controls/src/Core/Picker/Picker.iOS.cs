@@ -1,7 +1,6 @@
 ﻿#nullable disable
 using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
-using Microsoft.Maui.Platform;
 
 namespace Microsoft.Maui.Controls
 {
@@ -16,21 +15,19 @@ namespace Microsoft.Maui.Controls
 		public static void MapUpdateMode(PickerHandler handler, Picker picker) =>
 			MapUpdateMode((IPickerHandler)handler, picker);
 
-		static void MapBorderColor(IPickerHandler handler, Picker picker)
+		public static void MapBorderColor(IPickerHandler handler, Picker picker)
 		{
-			// For iOS, apply border-related properties via the platform view's layer, similar to other text-based controls.
-			if (handler?.PlatformView is MauiPicker platformView)
+			if (handler is PickerHandler ph)
 			{
-				platformView.Layer.BorderColor = picker.BorderColor.ToCGColor();
+				ph.PlatformView.CreateBorder(picker);
 			}
 		}
 
-		static void MapBorderThickness(IPickerHandler handler, Picker picker)
+		public static void MapBorderThickness(IPickerHandler handler, Picker picker)
 		{
-			// Border thickness changes share the same update path as border color.
-			if (handler?.PlatformView is MauiPicker platformView)
+			if (handler is PickerHandler ph)
 			{
-				platformView.UpdateBorder(picker);
+				handler.PlatformView.CreateBorder(picker);
 			}
 		}
 	}
